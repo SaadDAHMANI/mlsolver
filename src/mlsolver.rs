@@ -5,10 +5,3 @@
 // Developped by : Saad Dahmani <sd.dahmani2000@gmail.com; s.dahmani@univ-bouira.dz>
 //***********************************************************************************************
 
-fn main() {
-    println!("Hello, world!");
-
-
-
-    
-}
