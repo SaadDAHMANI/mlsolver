@@ -6,8 +6,5 @@ authors =["Saad Dahmani <sd.dahmani2000@gmail.com; s.dahmani@univ-bouira.dz>"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-
-[dependencies.peroxide]
-version = "0.30.9"
-default-features = false
-features = ["O3"]
+[dependencies]
+peroxide = "0.30.9"
