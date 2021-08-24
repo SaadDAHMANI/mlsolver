@@ -31,23 +31,27 @@ for i in 0..q.row {
     qmax += q[(i,0)]; 
 }
 
-// step 1 : establish A & B using eq.19
-// 1.1- initilize A matrix :
-let a= initilize_a(&r, qmax);
-
-a.print();
-
-// 1.2- initiliza B matrix :
-let b = zeros(np,1);
-
-b.print();
-
 
 //while err>errobj {
-while iter < itermax {
-    iter+=1;
+while iter < itermax { 
 
   // step 1- Update A & B
+  if iter==0 {
+    // step 1 : establish A & B using eq.19
+    // 1.1- initilize A matrix :
+    let a= initilize_a(&r, qmax);
+  
+    //a.print();
+    
+    // 1.2- initiliza B matrix :
+    let b = zeros(np,1);
+    
+    b.print();      
+  }
+  else {
+
+
+  }
 
   // step 2- Compute V (eq.31) and C (eq.32)
   
@@ -58,8 +62,12 @@ while iter < itermax {
   println!("[A]^-1 = a.inv()");
   inva.print();
 
-  let v = prouct(&a21, &inva);
+ //let v = prouct(&a21, &inva);
 
+ 
+
+
+  iter+=1;
 
 }
 
@@ -70,23 +78,52 @@ while iter < itermax {
 }
 
 fn initilize_a(resistance : &Matrix, qmax : f64)->Matrix {
-   
-    let np = resistance.row;
-
-    let mut a = eye(np);
- 
-    for i in 0..np {
+      let np = resistance.row;
+     let mut a = zeros(np, np);
+     for i in 0..np {
         a[(i,i)]=resistance[(i,0)]*qmax;    
-    }
+     }
 
     return a;
 }
 
 
-fn prouct(left : &Matrix, right : &Matrix)->Matrix{
+fn product(left : &Matrix, right : &Matrix)->Matrix{
 
-    let nr =  left.row;
-    let result = zeros(nr,nr);
+    //let left = ml_matrix("1 0; 2 -1");
+    //let right =ml_matrix("3 4; -2 -3");
+    //result = ml_matrix("3 4; 8 11");
+
+
+    //let s = ml_matrix("1 2 0 ; 4 3 -1");
+    //let t=ml_matrix("5 1; 2 3; 3 4");
+    //let z=product(&s,&t);
+    //    
+
+    let nrl =  left.row;
+    let ncr = right.col;
+    let nrr = right.row;
+
+    let mut result = zeros(nrl,nrl);
+    let mut _sum =0.0f64;
+    if nrl==ncr {
+
+        for i in 0..nrl {
+            
+            for j in 0..nrl{
+
+                 _sum = 0.0f64;
+
+                 for k in 0..nrr{
+
+                     _sum += left[(i,k)]*right[(k,j)];
+
+                 }
+
+                 result[(i,j)]=_sum;
+            } 
+       }
+    }
     result
 
 }
