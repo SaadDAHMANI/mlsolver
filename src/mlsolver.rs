@@ -240,8 +240,14 @@ mod tests{
          right[0][1]=4.0;
          right[1][0]=-2.0;
          right[1][1]= -3.0;
+
+         let mut expected = vec![vec![0.0f64; 2]; 2];
+         expected[0][0]=3.0;
+         expected[0][1]=4.0;
+         expected[1][0]= 8.0;
+         expected[1][1]= 11.0;
          
-         let expected = [[3.0, 4.0], [8.0, 11.0]];
+         let expected : Result<Vec<Vec<f64>>, String> = Ok(expected);
         
          assert_eq!(product(&left, &right), expected);         
     }
