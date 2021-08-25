@@ -10,15 +10,15 @@ include!("mlsolver.rs");
 fn main() {
     println!("Hello, mlsolver!");
 
-   let (a21, a01, q, r) = network1();
+   let (a21, a01, q, r, h0) = network1();
      
-   ml_solver(&a21, &a01, &q, &r);
+   ml_solver(&a21, &a01, &q, &r, h0);
   
 
 
 }
 
-fn network1()-> (Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
+fn network1()-> (Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>, f64) {
 
     let nn =4;
     let np = 7;
@@ -64,7 +64,9 @@ fn network1()-> (Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
     r[5]=200.0;
     r[6]=100.0;
 
-    (a21, a01, q, r) 
+    let h0 = 100.0f64;
+
+    (a21, a01, q, r, h0) 
  
 }
 

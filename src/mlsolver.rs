@@ -6,11 +6,11 @@
 //***********************************************************************************************
 
 //#[macro_use]
-extern crate peroxide;
-use peroxide::prelude::*;
+//extern crate peroxide;
+//use peroxide::prelude::*;
 //use peroxide::fuga::*;
 
-pub fn ml_solver( a21 : &Vec<Vec<f64>>, a01 : &Vec<f64>, q : &Vec<f64>, r : &Vec<f64>){
+pub fn ml_solver( a21 : &Vec<Vec<f64>>, a01 : &Vec<f64>, q : &Vec<f64>, r : &Vec<f64>, h0:f64){
 
 let nn = a21.len();
 let np = a21[0].len();
@@ -25,10 +25,12 @@ let itermax : usize=1;
 
  let mut _a = vec![vec![0.0f64; np]; np]; //A
  let mut _b =vec![0.0f64; np]; // B
+ let mut _c = vec![0.0f64; np];
  let _a12 =transpose(a21);
 
  print(& a21, &"A21");
  print(&_a12, &"A12");
+ print_vector(&a01, "A01 :");
 
 
 // step 0 : compute Qmax 
@@ -54,11 +56,28 @@ while iter < itermax {
     // 1.2- initiliza B matrix :
         
       print_vector(&_b, &"[B]");      
-  }
-  else {
+     }
+     else { }
+
+    // Step 2 : Compute V (eq) and C 
+
+     let inva = invers_diagonal(&_a);
+     print(&inva, "[A-]");
+
+     let _v1 = product(&inva, &_a12);
+     let _v = product(&a21, &_v1);
+     print(&_v1, "[V1]");
+     //print(&_v, "[V]");
+
+     for i in 0..np {
+         _c[i]=(-1.0*_b[i])-(h0*a01[i])
+     }
+
+     print_vector(&_c, "C : ");
 
 
-  }
+
+
 
 
      iter+=1;
@@ -94,32 +113,56 @@ fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
 }
 
 
- fn product(left : &Matrix, right : &Matrix)->Matrix {
+ fn product(left : &Vec<Vec<f64>>, right : &Vec<Vec<f64>>)->Vec<Vec<f64>> {
     
-    let nrl =  left.row;
-    let ncr = right.col;
-    let nrr = right.row;
+    let m =  left.len();
+    let pl = left[0].len();
 
-    let mut result = zeros(nrl,nrl);
-    let mut _sum =0.0f64;
-    if nrl==ncr {
-        for i in 0..nrl {
+    let n = right[0].len();
+    let pr = right.len();
+
+    let mut result = vec![vec![0.0f64; n]; m];
+    //let mut _sum =0.0f64;
+    if pl==pr {
+        for i in 0..m{          
             
-            for j in 0..nrl{
+            for j in 0..n{
 
-                 _sum = 0.0f64;
+                //_sum = 0.0f64;
 
-                 for k in 0..nrr{
+                 for k in 0..pl{
 
-                     _sum += left[(i,k)]*right[(k,j)];
+                    result[i][j] += left[i][k]*right[k][j];
 
                  }
 
-                 result[(i,j)]=_sum;
+                 //result[i][j]=_sum;
             } 
        }
     }
     result
+}
+
+ fn product2(value : f64, vector : &Vec<f64>)->Vec<f64> {
+    
+    let mut result = vec![0.0f64; vector.len()];
+    for i in 0..vector.len() {
+         result[i]=value*vector[i];
+     }
+     result
+ }
+
+fn invers_diagonal(matrix : &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
+       
+   //if matrix.len()==matrix[0].len() {
+       let mut invers = vec![vec![0.0f64; matrix.len()]; matrix.len()];
+
+        for i in 0.. matrix.len(){
+            invers[i][i]=1.0/matrix[i][i];
+        }
+
+      return invers ;
+    //}    
 }
 
 
@@ -157,31 +200,22 @@ mod tests{
     use super::*;
     #[test]
     fn product_test1() {
-         let left = ml_matrix("1 0; 2 -1");
-         let right =ml_matrix("3 4; -2 -3");
-         let expected = ml_matrix("3 4; 8 11");
+
+         let mut left = vec![vec![0.0f64; 2]; 2];
+         left[0][0]=1.0;
+         left[1][0]=2.0;
+         left[1][1]=-1.0;
+
+         let mut right = vec![vec![0.0f64; 2]; 2];
+         right[0][0]=3.0;
+         right[0][1]=4.0;
+         right[1][0]=-2.0;
+         right[1][1]= -3.0;
+         
+         let expected = [[3.0, 4.0], [8.0, 11.0]];
         
          assert_eq!(product(&left, &right), expected);         
     }
     
-    #[test]
-    fn product_test2(){
-
-         let s = ml_matrix("1 2 0 ; 4 3 -1");
-         let t=ml_matrix("5 1; 2 3; 3 4");
-         let expected = ml_matrix("9 7; 23 9");
-
-          assert_eq!(product(&s,&t),expected);
-    }
-
-    #[test]
-    fn product_test3(){
-        let s = ml_matrix("1 2 0 ; 4 3 -1");
-        let t=ml_matrix("5 1; 2 3; 3 4");
-        let expected = ml_matrix("9 13 -1; 14 13 -3; 19 18 -4");
-        
-        assert_eq!(product(&t, &s),expected);        
-    }
-
-    
+       
 }
