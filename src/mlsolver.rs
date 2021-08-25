@@ -62,6 +62,11 @@ while iter < itermax {
     // Step 2 : Compute V (eq) and C 
 
      let inva = invers_diagonal(&_a);
+     let inva = match inva {
+            Ok(matrix)=>matrix,
+            Err(error) => panic!("Problem with inverse diagonal matrix {:?}", error),      
+     };
+
      print(&inva, "[A-]");
 
      let _v1 = product(&inva, &_a12);
@@ -143,26 +148,36 @@ fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
     result
 }
 
- fn product2(value : f64, vector : &Vec<f64>)->Vec<f64> {
+ //fn product2(value : f64, vector : &Vec<f64>)->Vec<f64> {
     
-    let mut result = vec![0.0f64; vector.len()];
-    for i in 0..vector.len() {
-         result[i]=value*vector[i];
+    //let mut result = vec![0.0f64; vector.len()];
+    //for i in 0..vector.len() {
+     //    result[i]=value*vector[i];
+    // }
+     //result
+ //}
+
+fn invers_diagonal(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
+    
+    if matrix.len()==0 {
+        Err(String::from("The matrix size must be >0!"))
      }
-     result
- }
+     else {
+    
+         if matrix.len()== matrix[0].len() {
+             let mut invers = vec![vec![0.0f64; matrix.len()]; matrix.len()];
 
-fn invers_diagonal(matrix : &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
-       
-   //if matrix.len()==matrix[0].len() {
-       let mut invers = vec![vec![0.0f64; matrix.len()]; matrix.len()];
+             for i in 0.. matrix.len(){
+                 invers[i][i]=1.0/matrix[i][i];
+             }
 
-        for i in 0.. matrix.len(){
-            invers[i][i]=1.0/matrix[i][i];
-        }
+      Ok(invers)
 
-      return invers ;
-    //}    
+    }
+    else {
+         Err(String::from("The matrix is not square!"))
+    }
+  }   
 }
 
 
@@ -217,5 +232,27 @@ mod tests{
          assert_eq!(product(&left, &right), expected);         
     }
     
+    #[test]
+    fn invers_diagonal_test1() {
+         let mut mtrx = vec![vec![0.0f64; 2]; 2];
+         mtrx[0][0]=2.0;
+         mtrx[1][1]=-2.0;
+         let mut invrs = vec![vec![0.0f64; 2]; 2];
+         invrs[0][0]=0.5;
+         invrs[1][1]=-0.5;
+         
+         let expected : Result<Vec<Vec<f64>>, String> = Ok(invrs);
+
+         assert_eq!(invers_diagonal(&mtrx), expected);
+    }
+
+    #[test]
+    fn invers_diagonal_when_fail(){
+        let mtrx = vec![vec![0.0f64; 2]; 3];
+        let expected : Result<Vec<Vec<f64>>, String> = Err(String::from("The matrix is not square!"));
+        assert_eq!(invers_diagonal(&mtrx), expected);
+
+    }
+
        
 }
