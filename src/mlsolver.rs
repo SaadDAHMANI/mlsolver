@@ -23,6 +23,11 @@ let itermax : usize=1;
 //let err : f64 =10f64;
 //let errobj : f64 =0.0001;
 
+ let mut _a = zeros(np,np); //A
+ let mut _b =zeros(np,1); // B
+ let _a12 =a21.transpose();
+
+ println!("A12"); _a12.print();
 
 
 // step 0 : compute Qmax 
@@ -35,18 +40,19 @@ for i in 0..q.row {
 //while err>errobj {
 while iter < itermax { 
 
-  // step 1- Update A & B
+  // step 1- Update A & B 
+
+  // initilize A & B if the first iteration
   if iter==0 {
     // step 1 : establish A & B using eq.19
     // 1.1- initilize A matrix :
-    let _a= initilize_a(&r, qmax);
+     initilize_a(&mut _a, &r, qmax);
   
-    //a.print();
+    _a.print();
     
     // 1.2- initiliza B matrix :
-    let b = zeros(np,1);
-    
-    b.print();      
+        
+     _b.print();      
   }
   else {
 
@@ -54,10 +60,25 @@ while iter < itermax {
   }
 
   // step 2- Compute V (eq.31) and C (eq.32)
-  
-   
+  let _inva = _a.inv();
+
+  println!("A^-1"); _inva.print();
+
+  let _v1 = product(&_inva, &a21.transpose());
+
+  println!("V1") ; _v1.print();
+
+   let _v = product(&a21, &_v1); 
+  println!("V") ; _v.print();
 
  //let v = prouct(&a21, &inva);
+
+ let s = ml_matrix("1.5 2.10 0 ; 4.50 3.23 -1.569");
+ let t=ml_matrix("5.5 1.25; 2.3 3; 3 4");
+
+ let mm = product(&s, &t);
+ println!("mm = ") ; mm.print();
+ //let expected = ml_matrix("9 13 -1; 14 13 -3; 19 18 -4");
 
  
 
@@ -65,26 +86,20 @@ while iter < itermax {
   iter+=1;
 
 }
-
-
-
-
-
 }
 
-fn initilize_a(resistance : &Matrix, qmax : f64)->Matrix {
-      let np = resistance.row;
-     let mut a = zeros(np, np);
-     for i in 0..np {
-        a[(i,i)]=resistance[(i,0)]*qmax;    
+fn initilize_a(result : &mut Matrix,  resistance : &Matrix, qmax : f64) {
+     let np = resistance.row;
+     if result.row == np {
+        if result.col==np {
+             for i in 0..np {
+                 result[(i,i)]=resistance[(i,0)]*qmax;
+             }
+         }
      }
-
-    return a;
 }
-
 
  fn product(left : &Matrix, right : &Matrix)->Matrix {
-
     
     let nrl =  left.row;
     let ncr = right.col;
@@ -93,7 +108,6 @@ fn initilize_a(resistance : &Matrix, qmax : f64)->Matrix {
     let mut result = zeros(nrl,nrl);
     let mut _sum =0.0f64;
     if nrl==ncr {
-
         for i in 0..nrl {
             
             for j in 0..nrl{
@@ -113,6 +127,11 @@ fn initilize_a(resistance : &Matrix, qmax : f64)->Matrix {
     result
 }
 
+
+
+
+
+//****************************************************************************************************
 #[cfg(test)]
 mod tests{
     use super::*;
@@ -144,4 +163,5 @@ mod tests{
         assert_eq!(product(&t, &s),expected);        
     }
 
+    
 }
