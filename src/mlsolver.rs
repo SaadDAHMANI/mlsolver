@@ -39,7 +39,7 @@ while iter < itermax {
   if iter==0 {
     // step 1 : establish A & B using eq.19
     // 1.1- initilize A matrix :
-    let a= initilize_a(&r, qmax);
+    let _a= initilize_a(&r, qmax);
   
     //a.print();
     
@@ -55,12 +55,7 @@ while iter < itermax {
 
   // step 2- Compute V (eq.31) and C (eq.32)
   
-  let inva= a.transpose().inv();
-
-  //let v = inv_a*a21;
-
-  println!("[A]^-1 = a.inv()");
-  inva.print();
+   
 
  //let v = prouct(&a21, &inva);
 
@@ -88,15 +83,9 @@ fn initilize_a(resistance : &Matrix, qmax : f64)->Matrix {
 }
 
 
-fn product(left : &Matrix, right : &Matrix)->Matrix{
+ fn product(left : &Matrix, right : &Matrix)->Matrix {
 
     
-
-    //let s = ml_matrix("1 2 0 ; 4 3 -1");
-    //let t=ml_matrix("5 1; 2 3; 3 4");
-    //let z=product(&s,&t);
-    //    
-
     let nrl =  left.row;
     let ncr = right.col;
     let nrr = right.row;
@@ -122,5 +111,37 @@ fn product(left : &Matrix, right : &Matrix)->Matrix{
        }
     }
     result
+}
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+    #[test]
+    fn product_test1() {
+         let left = ml_matrix("1 0; 2 -1");
+         let right =ml_matrix("3 4; -2 -3");
+         let expected = ml_matrix("3 4; 8 11");
+        
+         assert_eq!(product(&left, &right), expected);         
+    }
+    
+    #[test]
+    fn product_test2(){
+
+         let s = ml_matrix("1 2 0 ; 4 3 -1");
+         let t=ml_matrix("5 1; 2 3; 3 4");
+         let expected = ml_matrix("9 7; 23 9");
+
+          assert_eq!(product(&s,&t),expected);
+    }
+
+    #[test]
+    fn product_test3(){
+        let s = ml_matrix("1 2 0 ; 4 3 -1");
+        let t=ml_matrix("5 1; 2 3; 3 4");
+        let expected = ml_matrix("9 13 -1; 14 13 -3; 19 18 -4");
+        
+        assert_eq!(product(&t, &s),expected);        
+    }
 
 }
