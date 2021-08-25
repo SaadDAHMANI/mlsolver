@@ -64,14 +64,24 @@ while iter < itermax {
      let inva = invers_diagonal(&_a);
      let inva = match inva {
             Ok(matrix)=>matrix,
-            Err(error) => panic!("Problem with inverse diagonal matrix {:?}", error),      
+            Err(error) => panic!("Problem with inverse diagonal matrix : {:?}", error),      
      };
 
      print(&inva, "[A-]");
 
      let _v1 = product(&inva, &_a12);
+     let _v1 = match _v1{
+         Ok(matrix)=> matrix,
+         Err(error)=> panic!("Problem with product matrices : {:?}", error),
+     };
+
      let _v = product(&a21, &_v1);
-     print(&_v1, "[V1]");
+     let _v = match _v {
+         Ok(matrix)=>matrix,
+         Err(error)=> panic!("Problem with product matrices : {:?}", error),
+     };
+
+     print(&_v, "[V]");
      //print(&_v, "[V]");
 
      for i in 0..np {
@@ -118,7 +128,7 @@ fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
 }
 
 
- fn product(left : &Vec<Vec<f64>>, right : &Vec<Vec<f64>>)->Vec<Vec<f64>> {
+ fn product(left : &Vec<Vec<f64>>, right : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
     
     let m =  left.len();
     let pl = left[0].len();
@@ -127,25 +137,29 @@ fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
     let pr = right.len();
 
     let mut result = vec![vec![0.0f64; n]; m];
-    //let mut _sum =0.0f64;
+    let mut _sum =0.0f64;
     if pl==pr {
         for i in 0..m{          
             
             for j in 0..n{
 
-                //_sum = 0.0f64;
+                _sum = 0.0f64;
 
                  for k in 0..pl{
 
-                    result[i][j] += left[i][k]*right[k][j];
+                    _sum += left[i][k]*right[k][j];
 
                  }
 
-                 //result[i][j]=_sum;
+                 result[i][j]=_sum;
             } 
        }
+       Ok(result)
     }
-    result
+    else{
+        Err(String::from("Colomns's count of left matrix not equals rows's count of right matrix!"))
+    }
+    
 }
 
  //fn product2(value : f64, vector : &Vec<f64>)->Vec<f64> {
