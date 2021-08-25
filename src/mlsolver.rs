@@ -5,15 +5,15 @@
 // Developped by : Saad Dahmani <sd.dahmani2000@gmail.com; s.dahmani@univ-bouira.dz>
 //***********************************************************************************************
 
-#[macro_use]
+//#[macro_use]
 extern crate peroxide;
 use peroxide::prelude::*;
 //use peroxide::fuga::*;
 
-pub fn ml_solver(a21 : &Matrix, a01 : &Matrix, q : &Matrix, r : &Matrix){
+pub fn ml_solver( a21 : &Vec<Vec<f64>>, a01 : &Vec<f64>, q : &Vec<f64>, r : &Vec<f64>){
 
-let nn =a21.row;
-let np =a21.col;
+let nn = a21.len();
+let np = a21[0].len();
 
 if nn<2 {return;}
 if np<1 {return;}
@@ -23,17 +23,18 @@ let itermax : usize=1;
 //let err : f64 =10f64;
 //let errobj : f64 =0.0001;
 
- let mut _a = zeros(np,np); //A
- let mut _b =zeros(np,1); // B
- let _a12 =a21.transpose();
+ let mut _a = vec![vec![0.0f64; np]; np]; //A
+ let mut _b =vec![0.0f64; np]; // B
+ let _a12 =transpose(a21);
 
- println!("A12"); _a12.print();
+ print(& a21, &"A21");
+ print(&_a12, &"A12");
 
 
 // step 0 : compute Qmax 
 let mut qmax : f64 =0.0;
-for i in 0..q.row {
-    qmax += q[(i,0)]; 
+for i in 0..q.len() {
+   qmax+=q[i];
 }
 
 
@@ -46,58 +47,52 @@ while iter < itermax {
   if iter==0 {
     // step 1 : establish A & B using eq.19
     // 1.1- initilize A matrix :
-     initilize_a(&mut _a, &r, qmax);
+     initilize_a(&mut _a, & r, qmax);
   
-    _a.print();
+     print(&_a,&"[A]");
     
     // 1.2- initiliza B matrix :
         
-     _b.print();      
+      print_vector(&_b, &"[B]");      
   }
   else {
 
 
   }
 
-  // step 2- Compute V (eq.31) and C (eq.32)
-  let _inva = _a.inv();
 
-  println!("A^-1"); _inva.print();
-
-  let _v1 = product(&_inva, &a21.transpose());
-
-  println!("V1") ; _v1.print();
-
-   let _v = product(&a21, &_v1); 
-  println!("V") ; _v.print();
-
- //let v = prouct(&a21, &inva);
-
- let s = ml_matrix("1.5 2.10 0 ; 4.50 3.23 -1.569");
- let t=ml_matrix("5.5 1.25; 2.3 3; 3 4");
-
- let mm = product(&s, &t);
- println!("mm = ") ; mm.print();
- //let expected = ml_matrix("9 13 -1; 14 13 -3; 19 18 -4");
-
- 
-
-
-  iter+=1;
-
-}
+     iter+=1;
+     }
 }
 
-fn initilize_a(result : &mut Matrix,  resistance : &Matrix, qmax : f64) {
-     let np = resistance.row;
-     if result.row == np {
-        if result.col==np {
+fn initilize_a(result : &mut Vec<Vec<f64>>,  resistance : &Vec<f64>, qmax : f64) {
+    
+    let np = resistance.len();
+     if result.len() == np {
+        if result[0].len()==np {
              for i in 0..np {
-                 result[(i,i)]=resistance[(i,0)]*qmax;
+                 result[i][i]= resistance[i]*qmax;
              }
          }
      }
 }
+
+
+fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
+ 
+    let nr = matrix.len();
+    let nc = matrix[0].len();
+    let mut transposed = vec![vec![0.0f64; nr]; nc];
+
+    for i in 0..nr{
+        for j in 0..nc {
+            transposed[j][i]=matrix[i][j];
+        }
+    }
+
+    transposed
+}
+
 
  fn product(left : &Matrix, right : &Matrix)->Matrix {
     
@@ -127,6 +122,31 @@ fn initilize_a(result : &mut Matrix,  resistance : &Matrix, qmax : f64) {
     result
 }
 
+
+fn print( matrix : &Vec<Vec<f64>>, msg: &str) {
+
+    let nr=matrix.len();
+    let nc = matrix[0].len();
+
+    println!("---- {}", msg);
+    for i in 0..nr {
+         print!("[{},:]",i);
+        for j in 0..nc {
+           print!(" {}", matrix[i][j]); 
+        }
+        println!(" ");
+    } 
+}
+
+fn print_vector( vector : &Vec<f64>, msg: &str) {
+
+    let nr=vector.len();
+    println!("---- {}", msg);
+    for i in 0..nr {
+         print!("[{},:]",i);
+         println!("  {}",vector[i]); 
+    }
+}
 
 
 
