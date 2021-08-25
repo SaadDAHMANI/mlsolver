@@ -90,10 +90,7 @@ fn initilize_a(resistance : &Matrix, qmax : f64)->Matrix {
 
 fn product(left : &Matrix, right : &Matrix)->Matrix{
 
-    //let left = ml_matrix("1 0; 2 -1");
-    //let right =ml_matrix("3 4; -2 -3");
-    //result = ml_matrix("3 4; 8 11");
-
+    
 
     //let s = ml_matrix("1 2 0 ; 4 3 -1");
     //let t=ml_matrix("5 1; 2 3; 3 4");
