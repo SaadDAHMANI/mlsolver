@@ -19,7 +19,7 @@ if nn<2 {return Option::None;}
 if np<1 {return Option::None;}
 
 let mut iter : usize =0;
-let itermax : usize=1; 
+let itermax : usize=2; 
 //let err : f64 =10f64;
 //let errobj : f64 =0.0001;
 
@@ -28,6 +28,11 @@ let itermax : usize=1;
  let mut _c = vec![0.0f64; np];
  let mut _flowsq = vec![0.0f64; np];
  let mut _headsh =  vec![0.0f64; nn];
+ let mut _coef_a = vec![0.0f64; np]; // ai
+ let mut _coef_b = vec![0.0f64; np]; //bi
+
+ let m : f64 = 10.0;
+ let n : f64 = 2.0;
 
  let _a12 =transpose(a21);
 
@@ -41,6 +46,8 @@ let mut qmax : f64 =0.0;
 for i in 0..q.len() {
    qmax+=q[i];
 }
+// compute delta Q
+let deltaq = qmax/m;
 
 
 //while err>errobj {
@@ -60,7 +67,25 @@ while iter < itermax {
         
       print_vector(&_b, &"[B]");      
      }
-     else { }
+
+     else {
+         //update ai :
+
+         let mut _intpart : f64 =0.0;
+                 
+        for i in 0..np {
+             _intpart=_flowsq[i]/deltaq;   
+             _coef_a[i] = f64::trunc(_intpart)*deltaq;
+             _coef_b[i] = f64::trunc(_intpart + f64::signum(_flowsq[i]))*deltaq;
+        
+              //Updating A (eq13):
+             _intpart =(f64::powf(_coef_b[i], n)- f64::powf(_coef_a[i],n))/(_coef_b[i]-_coef_a[i]);
+             _a[i][i]=f64::signum(_flowsq[i])*r[i]*_intpart;
+            
+              //Updating B (eq14):
+              _b[i]=-1.0*f64::signum(_flowsq[i])*r[i]*(_intpart*_coef_a[i] - f64::powf(_coef_a[i],n));  
+        } 
+     }
 
      // Step 2 : Compute V (eq) and C 
      // Compute V:
