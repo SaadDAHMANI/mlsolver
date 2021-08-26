@@ -5,15 +5,24 @@
 // Developped by : Saad Dahmani <sd.dahmani2000@gmail.com; s.dahmani@univ-bouira.dz>
 //***********************************************************************************************
 
+use std::time::Instant;
+
 include!("mlsolver.rs");
 
 fn main() {
-    println!("Hello, mlsolver!");
+    println!("Hello, mlsolver ()!");
+
+   
 
     let (a21, a01, q, r, h0) = network1();
-     
+    
+    let chronos = Instant::now();
+    
     let q_h = ml_solver(&a21, &a01, &q, &r, h0);
-    match q_h {
+    
+    let duration = chronos.elapsed();
+
+        match q_h {
         Some(results)=> { 
              print_vector(&results.0, "[Qi]:"); 
              print_vector(&results.1, "[Hi]:"); 
@@ -21,11 +30,8 @@ fn main() {
         },
         None => println!("fail!"),
     };
-
    
-
-
-
+    println!("Computation time is : {:?}", duration);
 
 }
 
