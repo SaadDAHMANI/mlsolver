@@ -10,10 +10,17 @@ include!("mlsolver.rs");
 fn main() {
     println!("Hello, mlsolver!");
 
-   let (a21, a01, q, r, h0) = network1();
+    let (a21, a01, q, r, h0) = network1();
      
-   ml_solver(&a21, &a01, &q, &r, h0);
-  
+    let q_h = ml_solver(&a21, &a01, &q, &r, h0);
+    match q_h {
+        Some(results)=> println!("Q = {:?} ; H = {:?} ", results.0, results.1),
+        None => println!("fail!"),
+    };
+
+   
+
+
 
 
 }

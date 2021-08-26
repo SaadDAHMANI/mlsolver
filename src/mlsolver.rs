@@ -10,13 +10,13 @@ extern crate peroxide;
 use peroxide::prelude::*;
 //use peroxide::fuga::*;
 
-pub fn ml_solver( a21 : &Vec<Vec<f64>>, a01 : &Vec<f64>, q : &Vec<f64>, r : &Vec<f64>, h0:f64){
+pub fn ml_solver( a21 : &Vec<Vec<f64>>, a01 : &Vec<f64>, q : &Vec<f64>, r : &Vec<f64>, h0:f64)->Option<(Vec<f64>, Vec<f64>)> {
 
 let nn = a21.len();
 let np = a21[0].len();
 
-if nn<2 {return;}
-if np<1 {return;}
+if nn<2 {return Option::None;}
+if np<1 {return Option::None;}
 
 let mut iter : usize =0;
 let itermax : usize=1; 
@@ -26,6 +26,9 @@ let itermax : usize=1;
  let mut _a = vec![vec![0.0f64; np]; np]; //A
  let mut _b =vec![0.0f64; np]; // B
  let mut _c = vec![0.0f64; np];
+ let mut _flowsq = vec![0.0f64; np];
+ let mut _headsh =  vec![0.0f64; nn];
+
  let _a12 =transpose(a21);
 
  print(& a21, &"A21");
@@ -110,24 +113,43 @@ while iter < itermax {
          tmp[i] -= q[i];   
      }
 
-     let _hk = product2(&invv, &tmp);
-     let h = match _hk {
+     let _h = product2(&invv, &tmp);
+     _headsh = match _h {
          Ok(vect)=>vect,
          Err(error) =>  panic!("Problem with product matrix by vector : {:?}", error),
      };
 
-     print_vector(&h, "[H] :");
+     print_vector(&_headsh, "[H] :");
 
-     
+     // Step 4 : Compute flowws Q (eq30)
+      let tmpql = product2(&inva, &_c);
+      let tmpql =match tmpql{
+          Ok(vect)=>vect,
+          Err(error) =>  panic!("Problem with product matrix by vector : {:?}", error),
+      };
+      
+      let tmpqm = product(&inva, &_a12);
+      let tmpqm =match tmpqm {
+          Ok(matrx) => matrx,
+          Err(error) => panic!("Problem with matrix multiplication : {:?}", error),
+      };
 
+      let tmpqr = product2(&tmpqm, &_headsh);
+      let tmpqr = match tmpqr {
+            Ok(vect) => vect,
+            Err(error) => panic!("Problem with product matrix by vector : {:?}", error),        
+      };
 
+      for i in 0..np {
+          _flowsq[i]=tmpql[i]-tmpqr[i];
+      }
 
-
-
-
+      print_vector(&_flowsq, "[Q]");
 
      iter+=1;
      }
+
+        Some((_flowsq, _headsh))
 }
 
 fn initilize_a(result : &mut Vec<Vec<f64>>,  resistance : &Vec<f64>, qmax : f64) {
