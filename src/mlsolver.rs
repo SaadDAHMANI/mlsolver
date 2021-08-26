@@ -6,8 +6,8 @@
 //***********************************************************************************************
 
 //#[macro_use]
-//extern crate peroxide;
-//use peroxide::prelude::*;
+extern crate peroxide;
+use peroxide::prelude::*;
 //use peroxide::fuga::*;
 
 pub fn ml_solver( a21 : &Vec<Vec<f64>>, a01 : &Vec<f64>, q : &Vec<f64>, r : &Vec<f64>, h0:f64){
@@ -59,36 +59,67 @@ while iter < itermax {
      }
      else { }
 
-    // Step 2 : Compute V (eq) and C 
-
+     // Step 2 : Compute V (eq) and C 
+     // Compute V:
      let inva = invers_diagonal(&_a);
      let inva = match inva {
-            Ok(matrix)=>matrix,
+            Ok(matrx)=>matrx,
             Err(error) => panic!("Problem with inverse diagonal matrix : {:?}", error),      
      };
 
      print(&inva, "[A-]");
 
-     let _v1 = product(&inva, &_a12);
+     let _v1 = product(&a21, &inva);
      let _v1 = match _v1{
-         Ok(matrix)=> matrix,
+         Ok(matrx)=> matrx,
          Err(error)=> panic!("Problem with product matrices : {:?}", error),
      };
 
-     let _v = product(&a21, &_v1);
+     let _v = product(&_v1, &_a12);
      let _v = match _v {
-         Ok(matrix)=>matrix,
+         Ok(matrx)=>matrx,
          Err(error)=> panic!("Problem with product matrices : {:?}", error),
      };
 
      print(&_v, "[V]");
-     //print(&_v, "[V]");
-
+   
+     //Compute C:
      for i in 0..np {
          _c[i]=(-1.0*_b[i])-(h0*a01[i])
      }
 
      print_vector(&_c, "C : ");
+
+     // Step 3 : Compute H (eq.29)
+     let invv = invers(&_v);
+     
+     let invv = match invv{
+         Ok(matrix) => matrix,
+         Err(error) => panic!("Problem with inverse matrix : {:?}", error),
+        
+     };
+
+     let tmp = product2(&_v1, &_c);
+
+     let mut tmp = match tmp {
+         Ok(vectr) => vectr,
+         Err(error) => panic!("Problem with product matrix by vector : {:?}", error),
+     };
+
+     for i in 0..nn {
+         tmp[i] -= q[i];   
+     }
+
+     let _hk = product2(&invv, &tmp);
+     let h = match _hk {
+         Ok(vect)=>vect,
+         Err(error) =>  panic!("Problem with product matrix by vector : {:?}", error),
+     };
+
+     print_vector(&h, "[H] :");
+
+     
+
 
 
 
@@ -160,6 +191,59 @@ fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
         Err(String::from("Colomns's count of left matrix not equals rows's count of right matrix!"))
     }
     
+}
+
+
+fn product2(left : &Vec<Vec<f64>>, right : &Vec<f64>)-> Result<Vec<f64>, String> {
+    
+    let m =  left.len();
+    let pl = left[0].len();
+
+
+    let pr = right.len();
+
+    let mut result = vec![0.0f64; m];
+    let mut _sum =0.0f64;
+    if pl==pr {
+        for i in 0..m{     
+
+            _sum = 0.0f64;
+
+            for j in 0..pl{                          
+            _sum += left[i][j]*right[j];     
+            } 
+
+            result[i]=_sum;
+       }
+       Ok(result)
+    }
+    else{
+        Err(String::from("Colomns's count of left matrix not equals rows's count of right vector!"))
+    }
+    
+}
+
+
+
+fn invers(matrix : &Vec<Vec<f64>>)->Result<Vec<Vec<f64>>, String> {
+    if matrix.len() != matrix[0].len() {
+        Err(String::from("Matrix is not square!"))
+    }
+    else {
+        let n = matrix.len();
+        //let mut inv = vec![vec![0.0f64; n]; n];
+        //Using peroxide crate :
+
+        let mut pmatrix = zeros(n,n);
+        //copy matrix 
+        for i in 0..n {
+            for j in 0..n {
+                pmatrix[(i,j)]=matrix[i][j];
+            }
+        }
+        let inversed =pmatrix.inv().to_vec(); 
+        Ok(inversed)
+    }
 }
 
  //fn product2(value : f64, vector : &Vec<f64>)->Vec<f64> {
@@ -271,6 +355,33 @@ mod tests{
         let mtrx = vec![vec![0.0f64; 2]; 3];
         let expected : Result<Vec<Vec<f64>>, String> = Err(String::from("The matrix is not square!"));
         assert_eq!(invers_diagonal(&mtrx), expected);
+
+    }
+    #[test]
+    fn product2_test1() {
+     
+        let mut left = vec![vec![0.0f64; 3]; 2];
+        left[0][0]=1.0;
+        left[0][1]=-1.0;
+        left[0][2]=2.0;
+
+        left[1][0]=0.0;
+        left[1][1]=-3.0;
+        left[1][2]= 1.0;
+
+        let mut vect = vec![0.0f64; 3];
+        vect[0]=2.0;
+        vect[1]=1.0;
+        vect[2]=0.0;
+
+        let mut expected = vec![0.0f64; 2];
+        expected[0]=1.0;
+        expected[1]=-3.0;
+
+        let expect : Result<Vec<f64>, String> = Ok(expected);
+
+        assert_eq!(product2(&left, &vect), expect);
+
 
     }
 
