@@ -14,7 +14,11 @@ fn main() {
      
     let q_h = ml_solver(&a21, &a01, &q, &r, h0);
     match q_h {
-        Some(results)=> println!("Q = {:?} ; H = {:?} ", results.0, results.1),
+        Some(results)=> { 
+             print_vector(&results.0, "[Qi]:"); 
+             print_vector(&results.1, "[Hi]:"); 
+             println!("Iter = {}", results.2);
+        },
         None => println!("fail!"),
     };
 
