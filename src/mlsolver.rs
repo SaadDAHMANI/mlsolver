@@ -5,6 +5,7 @@
 // Developped by : Saad Dahmani <sd.dahmani2000@gmail.com; s.dahmani@univ-bouira.dz>
 //***********************************************************************************************
 
+
 //#[macro_use]
 extern crate peroxide;
 use peroxide::prelude::*;
@@ -33,7 +34,7 @@ let objective_err : f64 =0.0001;
  let mut _coef_a = vec![0.0f64; np]; // ai
  let mut _coef_b = vec![0.0f64; np]; //bi
 
- let m : f64 = 20.0;
+ let m : f64 = 10.0;
  let n : f64 = 2.0;
 
  let _a12 =transpose(a21);
@@ -43,6 +44,7 @@ let objective_err : f64 =0.0001;
  
  // step 0 : compute Qmax 
  let mut qmax : f64 =0.0;
+ 
 for i in 0..q.len() {
    qmax+=q[i];
 }

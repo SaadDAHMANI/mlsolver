@@ -10,6 +10,10 @@ use std::time::Instant;
 include!("mlsolver.rs");
 include!("node.rs");
 include!("link.rs");
+include!("junction.rs");
+include!("tank.rs");
+include!("pipe.rs");
+include!("pump.rs");
 
 fn main() {
     println!("Hello, mlsolver ()!");
