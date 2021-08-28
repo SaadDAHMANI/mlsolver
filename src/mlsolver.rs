@@ -39,12 +39,10 @@ let objective_err : f64 =0.0001;
  let _a12 =transpose(a21);
 
  print(& a21, &"A21");
- print(&_a12, &"A12");
- print_vector(&a01, "A01 :");
-
-
-// step 0 : compute Qmax 
-let mut qmax : f64 =0.0;
+ //print(&_a12, &"A12");
+ 
+ // step 0 : compute Qmax 
+ let mut qmax : f64 =0.0;
 for i in 0..q.len() {
    qmax+=q[i];
 }

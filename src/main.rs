@@ -8,11 +8,50 @@
 use std::time::Instant;
 
 include!("mlsolver.rs");
+include!("node.rs");
+include!("link.rs");
 
 fn main() {
     println!("Hello, mlsolver ()!");
 
-   
+   let r1 = Node {
+       id : 1,
+       elevation : 100.00,
+       nodetype : NodeType::Tank,
+       name :Some(String::from("Reservoir")), 
+       head :Some(100.0),
+       pressure : None,    
+    };
+
+    r1.print();
+
+    let n2 = Node {
+        id : 2,
+        elevation : 100.00,
+        nodetype : NodeType::Tank,
+        name :Some(String::from("n1")), 
+        head :None,
+        pressure : None,    
+     };
+ 
+     n2.print();
+
+    let p1 = Pipe {
+        id : 1,
+        name : Some(String::from("p1")),
+        start : r1.id,
+        end : n2.id,
+        linktype : LinkType::Pipe,
+        length : 770.00,
+        diameter : 0.300,
+        c_hw : 130.0,
+        flow : None,
+        velocity : None,
+    };
+
+    p1.print();
+
+
 
     let (a21, a01, q, r, h0) = network1();
     
