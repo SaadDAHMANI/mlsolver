@@ -55,7 +55,7 @@ fn main() {
 
 
 
-    let (a21, a10, q, r, h0) = network1();
+    let (a21, a10, q, r, h0) = network2();
     
     let chronos = Instant::now();
     
@@ -76,7 +76,7 @@ fn main() {
 
 }
 
-// network1() : return one reservoir network
+// network1() : return one (01) reservoir network
 fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
 
     let nn =4; // 04 junctions
@@ -86,7 +86,6 @@ fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
 
     let mut h0 = vec![0.0f64; no];
     h0[0]=100.0; // 01 reservoir         
-
 
     let mut a21 = vec![vec![0.0f64; np]; nn];
     
@@ -133,5 +132,63 @@ fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
 
     (a21, a10, q, r, h0) 
  
+}
+
+
+// network2() : return two (02) reservoir network
+fn network2()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
+
+    let nn =4; // 04 junctions
+    let np = 7;
+    let no = 2; // two (02) fixed head
+
+
+    let mut h0 = vec![0.0f64; no];
+    h0[0]=100.0; // 1st reservoir         
+    h0[1]=110.0; // 2nd reservoir         
+
+    let mut a21 = vec![vec![0.0f64; np]; nn];
+    
+    a21[0][0] = 1.0f64;     
+    a21[0][2] =-1.0f64;
+    a21[0][3] =-1.0f64;
+    a21[0][4] =-1.0f64;
+
+    a21[1][1] =1.0f64;
+    a21[1][2] =1.0f64;
+    a21[1][5] =-1.0f64;
+
+    a21[2][3] =1.0f64;
+    a21[2][6] =-1.0f64;
+
+    a21[3][4] =1.0f64;
+    a21[3][5] =1.0f64;
+    a21[3][6] =1.0f64;   
+    
+    
+    //let mut a01 = ml_matrix("-1 -1 0 0 0 0 0");
+    let mut a10 = vec![vec![0.0f64; no]; np];
+    a10[0][0]=-1.0f64;
+    a10[1][1]=-1.0f64;
+
+    //let mut q = ml_matrix("0.1 0.2 0.3 0.4");
+    let mut q = vec![0.0f64; nn];
+    q[0]=0.1;
+    q[1]=0.2;
+    q[2]=0.3;
+    q[3]=0.4;
+
+    //let mut r = ml_matrix("1.5625 50 100 12.5 75 200 100");
+
+    let mut r = vec![0.0f64; np];
+    r[0]=1.5625;
+    r[1]=50.0;
+    r[2]=100.0;
+    r[3]=12.50;
+    r[4]=75.0;
+    r[5]=200.0;
+    r[6]=100.0;
+
+    (a21, a10, q, r, h0)  
 }
 
