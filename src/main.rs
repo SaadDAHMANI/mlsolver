@@ -55,11 +55,11 @@ fn main() {
 
 
 
-    let (a21, a01, q, r, h0) = network1();
+    let (a21, a10, q, r, h0) = network1();
     
     let chronos = Instant::now();
     
-    let q_h = ml_solver(&a21, &a01, &q, &r, h0);
+    let q_h = ml_solver(&a21, &a10, &q, &r, &h0);
     
     let duration = chronos.elapsed();
 
@@ -76,10 +76,18 @@ fn main() {
 
 }
 
-fn network1()-> (Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>, f64) {
+// network1() : return one reservoir network
+fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
 
-    let nn =4;
+    let nn =4; // 04 junctions
     let np = 7;
+    let no = 1; // one fixed head
+
+
+    let mut h0 = vec![0.0f64; no];
+    h0[0]=100.0; // 01 reservoir         
+
+
     let mut a21 = vec![vec![0.0f64; np]; nn];
     
     a21[0][0] =1.0f64;     
@@ -100,9 +108,9 @@ fn network1()-> (Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>, f64) {
     
     
     //let mut a01 = ml_matrix("-1 -1 0 0 0 0 0");
-    let mut a01 = vec![0.0f64; np];
-    a01[0]=-1.0f64;
-    a01[1]=-1.0f64;
+    let mut a10 = vec![vec![0.0f64; no]; np];
+    a10[0][0]=-1.0f64;
+    a10[1][0]=-1.0f64;
 
     //let mut q = ml_matrix("0.1 0.2 0.3 0.4");
     let mut q = vec![0.0f64; nn];
@@ -122,9 +130,8 @@ fn network1()-> (Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>, f64) {
     r[5]=200.0;
     r[6]=100.0;
 
-    let h0 = 100.0f64;
 
-    (a21, a01, q, r, h0) 
+    (a21, a10, q, r, h0) 
  
 }
 

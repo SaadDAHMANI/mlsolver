@@ -5,13 +5,18 @@
 // Developped by : Saad Dahmani <sd.dahmani2000@gmail.com; s.dahmani@univ-bouira.dz>
 //***********************************************************************************************
 
+// no : number of fixed head nodes (tanks + reservoirs) 
+// nn : number of node - no (exclude fixed head)
+// np : number of links = pipe + pumps + valves  
+// a21 : incidence matrix (nn x np)
+// a12 = transpose(a21) : incidence matrix (np x nn)   
 
 //#[macro_use]
 extern crate peroxide;
 use peroxide::prelude::*;
 //use peroxide::fuga::*;
-
-pub fn ml_solver( a21 : &Vec<Vec<f64>>, a01 : &Vec<f64>, q : &Vec<f64>, r : &Vec<f64>, h0:f64)->Option<(Vec<f64>, Vec<f64>, usize)> {
+  
+pub fn ml_solver( a21 : &Vec<Vec<f64>>, a10 : &Vec<Vec<f64>>, q : &Vec<f64>, r : &Vec<f64>, h0:&Vec<f64>)->Option<(Vec<f64>, Vec<f64>, usize)> {
 
 let nn = a21.len();
 let np = a21[0].len();
@@ -111,10 +116,16 @@ while stoploop == false {
      };
 
      //print(&_v, "[V]");
-   
+
      //Compute C:
+      let _tmpc = product2(&a10, &h0);
+      let tmpc = match _tmpc {
+            Ok(vectr) => vectr,
+            Err(error) =>  panic!("Problem with product matrix by vector : {:?}", error),
+      };
+
      for i in 0..np {
-         _c[i]=(-1.0*_b[i])-(h0*a01[i])
+         _c[i]=(-1.0*_b[i])- tmpc[i]; 
      }
 
      //print_vector(&_c, "C : ");
