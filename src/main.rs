@@ -145,7 +145,7 @@ fn network2()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
 
     let mut h0 = vec![0.0f64; no];
     h0[0]=100.0; // 1st reservoir         
-    h0[1]=110.0; // 2nd reservoir         
+    h0[1]=100.0; // 2nd reservoir        
 
     let mut a21 = vec![vec![0.0f64; np]; nn];
     

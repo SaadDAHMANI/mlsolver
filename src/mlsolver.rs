@@ -462,9 +462,44 @@ mod tests{
         let expect : Result<Vec<f64>, String> = Ok(expected);
 
         assert_eq!(product2(&left, &vect), expect);
+    }
 
+    #[test]
+    fn mlsolver_network1_test(){
+        //let (a21, a10, q, r, h0) = network1();
+        //let q_h = ml_solver(&a21, &a10, &q, &r, &h0);
+        //let mut expected_q = vec![0.0f64; 7];
+        //expected_q[0] = 0.8;
+        //expected_q[1] = 0.2;
+        //expected_q[2] = 0.1;
+        //expected_q[3] = 0.4;
+        //expected_q[4] = 0.2;
+        //expected_q[5] = 0.1;
+        //expected_q[6] = 0.1;
+
+        //let mut expected_h = vec![0.0f64; 4];    
+        //expected_h[0] = 99.0;
+        //expected_h[1] = 98.0;
+        //expected_h[2] = 97.0;
+        //expected_h[3] = 96.0;
+    
+        //let exphq : Option<(Vec<f64>, Vec<f64>, usize)> = Some((expected_q, expected_h, 4)); 
+        //let q = exphq.unwrap().0;
+        
+        //let result = Some(ml_solver(&a21, &a10, &q, &r, &h0));
+
+         //match result {
+           // Some(hq) => 
+            //{                          
+              // let exq= Some(hq).unwrap().0;
+               // assert_eq!(hq, exphq);
+             //},
+            //None =>  assert_eq!(1+1,3),
+        //} 
+        assert_eq!(2+2,4);
 
     }
+
 
        
 }
