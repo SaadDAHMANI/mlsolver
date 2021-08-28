@@ -14,21 +14,19 @@ include!("link.rs");
 fn main() {
     println!("Hello, mlsolver ()!");
 
-   let r1 = Node {
+   let r1 = Tank {
        id : 1,
        elevation : 100.00,
-       nodetype : NodeType::Tank,
        name :Some(String::from("Reservoir")), 
        head :Some(100.0),
-       pressure : None,    
+       pressure : Some(100.0),       
     };
 
     r1.print();
 
-    let n2 = Node {
+    let n2 = Junction {
         id : 2,
         elevation : 100.00,
-        nodetype : NodeType::Tank,
         name :Some(String::from("n1")), 
         head :None,
         pressure : None,    
