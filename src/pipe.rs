@@ -1,5 +1,5 @@
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Pipe{
     id : usize,
     name : Option<String>,
@@ -9,7 +9,33 @@ pub struct Pipe{
     diameter : f64,
     c_hw : f64,
     flow : Option<f64>,
-    velocity : Option<f64>,
+    //velocity : Option<f64>,
+}
+
+impl Pipe {
+
+    fn clone(&self)-> Pipe {
+        let newpipe = Pipe {
+            id : self.id,
+            name : self.name.clone(),
+            start : self.start,
+            end : self.end,
+            length : self.length,
+            diameter : self.diameter,
+            c_hw : self.c_hw,
+            flow : self.flow,
+        };
+        newpipe
+    }
+
+    fn headloss(&self)-> Option<f64> {
+
+        let hl = match self.flow {
+            Some(q) => Some(self.resistance()*q.powf(1.85)), 
+            None => None,
+        };
+        hl
+    }
 }
 
 

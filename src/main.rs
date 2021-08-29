@@ -40,11 +40,23 @@ fn main() {
    
     println!("Computation time is : {:?}", duration);
 
-    let mut vector = vec![0; 4];
-    for q in 0..3 {
-        vector.push(q);
-    }
+    let p1 = Pipe {
+        id : 1,
+        name :  Some(String::from("P1")),
+        start : 0,
+        end : 1,
+        length : 100.0,
+        diameter : 0.100,
+        c_hw : 130.0,
+        flow : None,
+        //velocity : None,
+    };
+    
+    let mut p2 = p1.clone();
+    p2.flow = Some(0.017);
 
-    println!("{:?}", q);
+    println!("headloss : {:?}", p2.headloss());
 
+    
+    
 }

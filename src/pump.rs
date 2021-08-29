@@ -1,5 +1,5 @@
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Pump{
     id : usize,
     name : Option<String>,

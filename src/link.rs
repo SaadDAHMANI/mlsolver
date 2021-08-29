@@ -1,12 +1,12 @@
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum LinkType {
     Pipe,
     Pump,
     Valve(ValveType),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum ValveType {
     FCV,
     PBV,

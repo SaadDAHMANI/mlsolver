@@ -1,5 +1,4 @@
 
-
 // network1() : return one (01) reservoir network
 fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
 
@@ -152,7 +151,7 @@ fn network3()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
-        velocity : None,
+        //velocity : None,
     };
     
     let p2 = Pipe {
@@ -164,7 +163,7 @@ fn network3()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
-        velocity : None,
+        //velocity : None,
     };
     
     let p3 = Pipe {
@@ -176,7 +175,7 @@ fn network3()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
-        velocity : None,
+        //velocity :None,
     };
     
     let ts = vec![t1];
@@ -242,7 +241,7 @@ fn network4()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
-        velocity : None,
+        //velocity : None,
     };
     
     let p2 = Pipe {
@@ -254,7 +253,7 @@ fn network4()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
-        velocity : None,
+        //velocity : None,
     };
     
     let p3 = Pipe {
@@ -266,7 +265,7 @@ fn network4()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
-        velocity : None,
+        //velocity : None,
     };
     
     let pmp1 = Pump {
