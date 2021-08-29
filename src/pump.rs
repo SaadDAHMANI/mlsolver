@@ -7,6 +7,9 @@ pub struct Pump{
     end : usize,
     flow : Option<f64>,
     head :  Option<f64>, 
+    alpha : f64,
+    beta : f64,
+    gamma : f64,
 }
 
 
@@ -21,6 +24,7 @@ impl Link for Pump {
     }
 
     fn to_string(&self)-> String {
-        format!("id: {}, name: {:?}, category: {:?} , {}--->{}", self.id, self.name, self.link_type(), self.start, self.end)
+        format!("id: {}, name: {:?}, category: {:?} , {}--->{}, Curve H-Q: {}Q^2 + {}Q + {}", 
+        self.id, self.name, self.link_type(), self.start, self.end, self.alpha, self.beta, self.gamma)
     }    
 }
