@@ -1,7 +1,7 @@
 
 //-----------------------------------Tank----------------------------
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Tank {
     id : usize,
     name : Option<String>,

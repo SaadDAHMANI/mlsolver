@@ -1,7 +1,7 @@
 //nclude!("node.rs");
 
 //-----------------------------------Junction----------------------------
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Junction {
     id : usize,
     name : Option<String>,

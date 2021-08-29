@@ -14,20 +14,6 @@ pub struct Pipe{
 
 impl Pipe {
 
-    fn clone(&self)-> Pipe {
-        let newpipe = Pipe {
-            id : self.id,
-            name : self.name.clone(),
-            start : self.start,
-            end : self.end,
-            length : self.length,
-            diameter : self.diameter,
-            c_hw : self.c_hw,
-            flow : self.flow,
-        };
-        newpipe
-    }
-
     fn headloss(&self)-> Option<f64> {
 
         let hl = match self.flow {

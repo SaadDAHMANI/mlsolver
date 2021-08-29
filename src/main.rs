@@ -56,7 +56,7 @@ fn main() {
     p2.flow = Some(0.017);
 
     println!("headloss : {:?}", p2.headloss());
-
     
     
 }
+

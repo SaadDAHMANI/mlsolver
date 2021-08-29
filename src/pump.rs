@@ -16,6 +16,14 @@ impl Pump {
     fn head_of(&self, flow :f64)->f64 {
        return self.alpha*flow.powi(2)+ self.beta * flow + self.gamma; 
     }
+
+    fn head(&self)-> Option<f64> {
+        let _hq = match self.flow {
+            Some(q) => Some(self.alpha*q.powi(2)+ self.beta * q + self.gamma), 
+            None => None,
+        };
+        _hq
+     }
 }
 
 
@@ -33,4 +41,30 @@ impl Link for Pump {
         format!("id: {}, name: {:?}, category: {:?} , {}--->{}, Curve H-Q: {}Q^2 + {}Q + {}", 
         self.id, self.name, self.link_type(), self.start, self.end, self.alpha, self.beta, self.gamma)
     }    
+}
+
+//************************************* TESTS **************************
+
+#[cfg(test)]
+mod pump_tests {
+    use super::*;
+
+    #[test]
+    fn head_of_test1() {
+        let pmp1 = Pump {
+            id : 4,
+            name : Some(String::from("Pump1")),
+            start : 3,
+            end : 2,
+            flow : Some(0.017),
+            head : None, 
+            alpha : 10.0,
+            beta : 20.0,
+            gamma : 30.0,
+        };
+
+        let _h = pmp1.head_of(0.017);
+         let exp_h = 30.34289000000000;
+         assert_eq!(_h, exp_h);
+    }
 }

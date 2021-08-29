@@ -1,7 +1,7 @@
 
 //-----------------------------------Reservoir----------------------------
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Reservoir {
     id : usize,
     name : Option<String>,
