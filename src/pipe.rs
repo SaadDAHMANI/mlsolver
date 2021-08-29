@@ -15,6 +15,9 @@ pub struct Pipe{
 
 
 impl Link for Pipe {
+    fn link_type(&self)->LinkType {
+        LinkType::Pipe
+    }
     fn resistance(&self)->f64 {
         (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
     }

@@ -17,6 +17,7 @@ pub enum ValveType {
 }
 
 pub trait Link {
+    fn link_type(&self)-> LinkType;
     fn resistance(&self)->f64; 
     fn to_string(&self)-> String;
     fn print(&self) {
