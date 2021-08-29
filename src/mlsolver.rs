@@ -15,7 +15,7 @@
 extern crate peroxide;
 use peroxide::prelude::*;
 //use peroxide::fuga::*;
-  
+ 
 pub fn ml_solver( a21 : &Vec<Vec<f64>>, a10 : &Vec<Vec<f64>>, q : &Vec<f64>, r : &Vec<f64>, h0:&Vec<f64>)->Option<(Vec<f64>, Vec<f64>, usize)> {
 
 let nn = a21.len();
@@ -74,24 +74,28 @@ while stoploop == false {
       //print_vector(&_b, &"[B]");      
      }
 
-     else {
-         //update ai :
+    else {
+         
+         //Updating A (eq13) & B (eq14):
 
-         let mut _intpart : f64 =0.0;
-                 
-        for i in 0..np {
-             _intpart=_flowsq[i]/deltaq;   
-             _coef_a[i] = f64::trunc(_intpart)*deltaq;
-             _coef_b[i] = f64::trunc(_intpart + f64::signum(_flowsq[i]))*deltaq;
+         update_a_b(&mut _a, &mut _b, &_flowsq, &r, deltaq, n);
+
+         //let mut _intpart : f64 =0.0;
         
-              //Updating A (eq13):
-             _intpart =(f64::powf(_coef_b[i], n)- f64::powf(_coef_a[i],n))/(_coef_b[i]-_coef_a[i]);
-             _a[i][i]=f64::signum(_flowsq[i])*r[i]*_intpart;
+        //for i in 0..np {
+        //    _intpart=_flowsq[i]/deltaq;   
+        //     _coef_a[i] = f64::trunc(_intpart)*deltaq;
+        //     _coef_b[i] = f64::trunc(_intpart + f64::signum(_flowsq[i]))*deltaq;
+        
+        //      //Updating A (eq13):
+        //     _intpart =(f64::powf(_coef_b[i], n)- f64::powf(_coef_a[i],n))/(_coef_b[i]-_coef_a[i]);
+        //     _a[i][i]=f64::signum(_flowsq[i])*r[i]*_intpart;
             
-              //Updating B (eq14):
-              _b[i]=-1.0*f64::signum(_flowsq[i])*r[i]*(_intpart*_coef_a[i] - f64::powf(_coef_a[i],n));  
-        } 
-     }
+        //      //Updating B (eq14):
+        //     _b[i]=-1.0*f64::signum(_flowsq[i])*r[i]*(_intpart*_coef_a[i] - f64::powf(_coef_a[i],n));  
+        //   }
+                   
+    }
 
      // Step 2 : Compute V (eq) and C 
      // Compute V:
@@ -212,6 +216,27 @@ fn initilize_a(result : &mut Vec<Vec<f64>>,  resistance : &Vec<f64>, qmax : f64)
              }
          }
      }
+}
+
+fn update_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, flowsq : &Vec<f64>, r : &Vec<f64>, deltaq : f64, n : f64) {
+
+    let mut _intpart : f64 = 0.0;
+    let mut _coef_a : f64 = 0.0;
+    let mut _coef_b : f64 = 0.0;
+    let np = a.len();
+                     
+    for i in 0..np {
+         _intpart=flowsq[i]/deltaq;   
+         _coef_a = f64::trunc(_intpart)*deltaq;
+         _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i]))*deltaq;
+    
+          //Updating A (eq13):
+         _intpart =(f64::powf(_coef_b, n)- f64::powf(_coef_a, n))/(_coef_b - _coef_a);
+         a[i][i]=f64::signum(flowsq[i])*r[i]*_intpart;
+        
+          //Updating B (eq14):
+         b[i]=-1.0*f64::signum(flowsq[i])*r[i]*(_intpart*_coef_a - f64::powf(_coef_a,n));  
+       } 
 }
 
 fn check_convergence(actual : &Vec<f64>, previous : &Vec<f64>, objective : f64)->bool {
