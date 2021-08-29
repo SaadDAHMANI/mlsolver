@@ -105,84 +105,9 @@ mod network_tests {
 use super::*;
 
     #[test]
-    fn get_network_test1() {
-    let t1 = Tank {
-        id :0,
-        name : Some (String::from("T1")),
-        elevation : 0.0,
-        head : 100.0,
-        pressure : None,
+    fn get_network_1tank() {
 
-    };
-
-    let j1 = Junction {
-        id : 1,
-        name : Some(String::from("J1")),
-        elevation : 0.0,
-        demand : 0.1,
-        head : None,
-        pressure : None,
-    };
-
-    let j2 = Junction {
-        id : 2,
-        name : Some(String::from("J2")),
-        elevation : 0.0,
-        demand : 0.1,
-        head : None,
-        pressure : None,
-    };
-
-    let p1 = Pipe {
-        id : 1,
-        name :  Some(String::from("P1")),
-        start : 0,
-        end : 1,
-        length : 100.0,
-        diameter : 0.100,
-        c_hw : 130.0,
-        flow : None,
-        velocity : None,
-    };
-    
-    let p2 = Pipe {
-        id : 2,
-        name :  Some(String::from("P2")),
-        start : 1,
-        end : 2,
-        length : 100.0,
-        diameter : 0.100,
-        c_hw : 130.0,
-        flow : None,
-        velocity : None,
-    };
-    
-    let p3 = Pipe {
-        id : 3,
-        name :  Some(String::from("P3")),
-        start : 0,
-        end : 2,
-        length : 100.0,
-        diameter : 0.100,
-        c_hw : 130.0,
-        flow : None,
-        velocity : None,
-    };
-    
-    let ts = vec![t1];
-    let js = vec![j1,j2];
-    let ps = vec![p1,p2,p3];
-    let pms = vec![];
-
-    let net1 = Network {
-        junctions :js,
-        pipes : ps,
-        tanks : ts,
-        reservoirs : None,
-        pumps : pms,
-    };
-
-     let (a21, a10, h0, q, r) = net1.get_network();
+     let (a21, a10, h0, q, r) = network3().get_network();
           
      let exp_a21 = vec![[1.0, -1.0, 0.0], [0.0, 1.0, 1.0]];
      let exp_a10 = vec![[-1.0], [0.0], [-1.0]];
@@ -200,104 +125,8 @@ use super::*;
 
     #[test]
     fn get_network_2tanks_1pump() {
-    let t1 = Tank {
-        id :0,
-        name : Some (String::from("T1")),
-        elevation : 0.0,
-        head : 100.0,
-        pressure : None,
 
-    };
-
-    let t2 = Tank {
-        id :3,
-        name : Some (String::from("T2")),
-        elevation : 0.0,
-        head : 50.0,
-        pressure : None,
-
-    };
-
-    let j1 = Junction {
-        id : 1,
-        name : Some(String::from("J1")),
-        elevation : 0.0,
-        demand : 0.1,
-        head : None,
-        pressure : None,
-    };
-
-    let j2 = Junction {
-        id : 2,
-        name : Some(String::from("J2")),
-        elevation : 0.0,
-        demand : 0.1,
-        head : None,
-        pressure : None,
-    };
-
-    let p1 = Pipe {
-        id : 1,
-        name :  Some(String::from("P1")),
-        start : 0,
-        end : 1,
-        length : 100.0,
-        diameter : 0.100,
-        c_hw : 130.0,
-        flow : None,
-        velocity : None,
-    };
-    
-    let p2 = Pipe {
-        id : 2,
-        name :  Some(String::from("P2")),
-        start : 1,
-        end : 2,
-        length : 100.0,
-        diameter : 0.100,
-        c_hw : 130.0,
-        flow : None,
-        velocity : None,
-    };
-    
-    let p3 = Pipe {
-        id : 3,
-        name :  Some(String::from("P3")),
-        start : 0,
-        end : 2,
-        length : 100.0,
-        diameter : 0.100,
-        c_hw : 130.0,
-        flow : None,
-        velocity : None,
-    };
-    
-    let pmp1 = Pump {
-        id : 4,
-        name : Some(String::from("Pump1")),
-        start : 3,
-        end : 2,
-        flow : None,
-        head : None, 
-        alpha : 10.0,
-        beta : 20.0,
-        gamma : 30.0,
-    };
-
-    let ts = vec![t1, t2];
-    let js = vec![j1, j2];
-    let ps = vec![p1, p2, p3];
-    let pms = vec![pmp1];
-
-    let net1 = Network {
-        junctions :js,
-        pipes : ps,
-        tanks : ts,
-        reservoirs : None,
-        pumps : pms,
-    };
-
-     let (a21, a10, h0, q, r) = net1.get_network();
+     let (a21, a10, h0, q, r) = network4().get_network();
           
      let exp_a21 = vec![[1.0, -1.0, 0.0, 0.0], [0.0, 1.0, 1.0, 1.0]];
      let exp_a10 = vec![[-1.0, 0.0], [0.0, 0.0], [-1.0, 0.0], [0.0, -1.0]];
@@ -311,9 +140,6 @@ use super::*;
      assert_eq!(q, exp_q);
      assert_eq!(r, exp_r);
     }
-
-
-
 
 }
 
