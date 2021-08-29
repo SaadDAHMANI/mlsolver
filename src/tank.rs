@@ -6,7 +6,7 @@ pub struct Tank {
     id : usize,
     name : Option<String>,
     elevation : f64,
-    head : Option<f64>,
+    head : f64,
     pressure :  Option<f64>,
 }
 

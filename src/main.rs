@@ -12,8 +12,11 @@ include!("node.rs");
 include!("link.rs");
 include!("junction.rs");
 include!("tank.rs");
+include!("reservoir.rs");
 include!("pipe.rs");
 include!("pump.rs");
+//include!("valve.rs");
+
 
 fn main() {
     println!("Hello, mlsolver ()!");
@@ -22,7 +25,7 @@ fn main() {
        id : 1,
        elevation : 100.00,
        name :Some(String::from("Reservoir")), 
-       head :Some(100.0),
+       head :100.0,
        pressure : Some(100.0),       
     };
 
@@ -32,6 +35,7 @@ fn main() {
         id : 2,
         elevation : 100.00,
         name :Some(String::from("n1")), 
+        demand : 1.0,
         head :None,
         pressure : None,    
      };
@@ -39,21 +43,32 @@ fn main() {
      n2.print();
 
     let p1 = Pipe {
-        id : 1,
-        name : Some(String::from("p1")),
-        start : r1.id,
-        end : n2.id,
-        linktype : LinkType::Pipe,
-        length : 770.00,
-        diameter : 0.300,
+        id : 3,
+        name :  Some(String::from("P3")),
+        start : 0,
+        end : 2,
+        length : 100.0,
+        diameter : 0.100,
         c_hw : 130.0,
         flow : None,
         velocity : None,
     };
-
+       
     p1.print();
 
+    let _pmp1= Pump {
+        id: 2,
+        name : Some(String::from("pmp1")),
+        start : n2.id,
+        end : r1.id,
+        flow : None,
+        head : None, 
+        alpha : 10.0,
+        beta : 20.0,
+        gamma : 30.0,
+    }; 
 
+    _pmp1.print();
 
     let (a21, a10, q, r, h0) = network2();
     
@@ -73,6 +88,13 @@ fn main() {
     };
    
     println!("Computation time is : {:?}", duration);
+
+    let mut vector = vec![0; 4];
+    for q in 0..3 {
+        vector.push(q);
+    }
+
+    println!("{:?}", q);
 
 }
 

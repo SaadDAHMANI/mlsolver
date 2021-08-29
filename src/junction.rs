@@ -6,6 +6,7 @@ pub struct Junction {
     id : usize,
     name : Option<String>,
     elevation : f64,
+    demand : f64,
     head : Option<f64>,
     pressure :  Option<f64>,
 }

@@ -5,7 +5,6 @@ pub struct Pipe{
     name : Option<String>,
     start : usize,
     end : usize,
-    linktype : LinkType,
     length : f64,
     diameter : f64,
     c_hw : f64,
@@ -23,6 +22,6 @@ impl Link for Pipe {
     }
 
     fn to_string(&self)-> String {
-        format!("id: {}, name: {:?}, category: {:?} , {}--->{} : diametre: {}, length: {}, R: {}", self.id, self.name, self.linktype, self.start, self.end, self.diameter, self.length, self.resistance())
+        format!("id: {}, name: {:?}, category: {:?} , {}--->{} : diametre: {}, length: {}, R: {}", self.id, self.name, self.link_type(), self.start, self.end, self.diameter, self.length, self.resistance())
     }    
 }

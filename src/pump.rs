@@ -6,10 +6,16 @@ pub struct Pump{
     start : usize,
     end : usize,
     flow : Option<f64>,
-    head :  Option<f64>, 
+    head : Option<f64>, 
     alpha : f64,
     beta : f64,
     gamma : f64,
+}
+
+impl Pump {
+    fn get_headof(&self, flow :f64)->f64 {
+       return self.alpha*flow.powi(2)+ self.beta * flow + self.gamma; 
+    }
 }
 
 

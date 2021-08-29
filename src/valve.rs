@@ -16,7 +16,8 @@ pub struct Valve{
 
 impl Link for Valve {
     fn resistance(&self)->f64 {
-        (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+        10.00
+        
     }
 
     fn to_string(&self)-> String {
