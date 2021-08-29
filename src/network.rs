@@ -213,7 +213,7 @@ use super::*;
         id :3,
         name : Some (String::from("T2")),
         elevation : 0.0,
-        head : 100.0,
+        head : 50.0,
         pressure : None,
 
     };
@@ -272,7 +272,6 @@ use super::*;
         velocity : None,
     };
     
-
     let pmp1 = Pump {
         id : 4,
         name : Some(String::from("Pump1")),
@@ -285,11 +284,10 @@ use super::*;
         gamma : 30.0,
     };
 
-
-    let ts = vec![t1];
-    let js = vec![j1,j2];
-    let ps = vec![p1,p2,p3];
-    let pms = vec![];
+    let ts = vec![t1, t2];
+    let js = vec![j1, j2];
+    let ps = vec![p1, p2, p3];
+    let pms = vec![pmp1];
 
     let net1 = Network {
         junctions :js,
@@ -301,9 +299,9 @@ use super::*;
 
      let (a21, a10, h0, q, r) = net1.get_network();
           
-     let exp_a21 = vec![[1.0, -1.0, 0.0], [0.0, 1.0, 1.0]];
-     let exp_a10 = vec![[-1.0], [0.0], [-1.0]];
-     let exp_h0 = vec![100.00];
+     let exp_a21 = vec![[1.0, -1.0, 0.0, 0.0], [0.0, 1.0, 1.0, 1.0]];
+     let exp_a10 = vec![[-1.0, 0.0], [0.0, 0.0], [-1.0, 0.0], [0.0, -1.0]];
+     let exp_h0 = vec![100.00, 50.0];
      let exp_q =vec![0.1, 0.1];
      let exp_r = vec![9628.116375044583, 9628.116375044583, 9628.116375044583];
     

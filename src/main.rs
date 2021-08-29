@@ -21,60 +21,11 @@ include!("pump.rs");
 fn main() {
     println!("Hello, mlsolver ()!");
 
-   let r1 = Tank {
-       id : 1,
-       elevation : 100.00,
-       name :Some(String::from("Reservoir")), 
-       head :100.0,
-       pressure : Some(100.0),       
-    };
-
-    r1.print();
-
-    let n2 = Junction {
-        id : 2,
-        elevation : 100.00,
-        name :Some(String::from("n1")), 
-        demand : 1.0,
-        head :None,
-        pressure : None,    
-     };
- 
-     n2.print();
-
-    let p1 = Pipe {
-        id : 3,
-        name :  Some(String::from("P3")),
-        start : 0,
-        end : 2,
-        length : 100.0,
-        diameter : 0.100,
-        c_hw : 130.0,
-        flow : None,
-        velocity : None,
-    };
-       
-    p1.print();
-
-    let _pmp1= Pump {
-        id: 2,
-        name : Some(String::from("pmp1")),
-        start : n2.id,
-        end : r1.id,
-        flow : None,
-        head : None, 
-        alpha : 10.0,
-        beta : 20.0,
-        gamma : 30.0,
-    }; 
-
-    _pmp1.print();
-
-    let (a21, a10, q, r, h0) = network2();
+    let (a21, a10, h0, q, r) = network2();
     
     let chronos = Instant::now();
     
-    let q_h = ml_solver(&a21, &a10, &q, &r, &h0);
+    let q_h = ml_solver(&a21, &a10, &h0, &q, &r );
     
     let duration = chronos.elapsed();
 
@@ -151,8 +102,7 @@ fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
     r[5]=200.0;
     r[6]=100.0;
 
-
-    (a21, a10, q, r, h0) 
+    (a21, a10, h0, q, r) 
  
 }
 
@@ -211,6 +161,6 @@ fn network2()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
     r[5]=200.0;
     r[6]=100.0;
 
-    (a21, a10, q, r, h0)  
+    (a21, a10, h0, q, r)  
 }
 

@@ -13,7 +13,7 @@ pub struct Pump{
 }
 
 impl Pump {
-    fn get_headof(&self, flow :f64)->f64 {
+    fn head_of(&self, flow :f64)->f64 {
        return self.alpha*flow.powi(2)+ self.beta * flow + self.gamma; 
     }
 }

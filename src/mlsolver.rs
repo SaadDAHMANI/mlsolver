@@ -16,7 +16,7 @@ extern crate peroxide;
 use peroxide::prelude::*;
 //use peroxide::fuga::*;
  
-pub fn ml_solver( a21 : &Vec<Vec<f64>>, a10 : &Vec<Vec<f64>>, q : &Vec<f64>, r : &Vec<f64>, h0:&Vec<f64>)->Option<(Vec<f64>, Vec<f64>, usize)> {
+pub fn ml_solver(a21 : &Vec<Vec<f64>>, a10 : &Vec<Vec<f64>>,  h0:&Vec<f64>, q : &Vec<f64>, r : &Vec<f64>)->Option<(Vec<f64>, Vec<f64>, usize)> {
 
 let nn = a21.len();
 let np = a21[0].len();
