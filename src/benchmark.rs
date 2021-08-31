@@ -186,6 +186,7 @@ fn network3()->Network {
     let ps = vec![p1,p2,p3];
     let pms = vec![];
     let rs = vec![];
+    let vlvs = vec![];
 
 
     let net3 = Network {
@@ -194,6 +195,7 @@ fn network3()->Network {
         tanks : ts,
         reservoirs : rs,
         pumps : pms,
+        valves : vlvs,
     };
 
     net3
@@ -294,6 +296,7 @@ fn network4()->Network {
     let ps = vec![p1, p2, p3];
     let pms = vec![pmp1];
     let rs = vec![];
+    let vlvs = vec![];
 
     let net4 = Network {
         junctions :js,
@@ -301,6 +304,7 @@ fn network4()->Network {
         tanks : ts,
         reservoirs : rs,
         pumps : pms,
+        valves : vlvs,
     };
 
      net4
@@ -392,6 +396,7 @@ fn network5()-> Network {
     let ps = vec![p1, p2, p3, p4];
     let pms = vec![pmp1];
     let rvs = vec![r1];
+    let vlvs = vec![];
 
     let net5 = Network {
         junctions :js,
@@ -399,6 +404,7 @@ fn network5()-> Network {
         tanks : ts,
         reservoirs : rvs,
         pumps : pms,
+        valves : vlvs,
     };
 
      net5

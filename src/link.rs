@@ -15,7 +15,7 @@ pub enum LinkStatus {
 
 #[derive(Debug, Copy, Clone)]
 pub enum ValveType {
-
+    CV,
     FCV,
     PBV,
     PRV,
@@ -25,8 +25,8 @@ pub enum ValveType {
 }
 
 pub trait Link {
-    fn link_type(&self)-> LinkType;
-    fn resistance(&self)->f64; 
+    fn link_type(&self)-> LinkType; 
+    //fn resistance(&self)->f64; 
     fn to_string(&self)-> String;
     fn print(&self) {
         println!("{}", self.to_string());

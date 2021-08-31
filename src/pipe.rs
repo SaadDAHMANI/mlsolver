@@ -25,6 +25,17 @@ impl Pipe {
         hl
     }
 
+    fn resistance(&self)->f64 {
+
+        if self.state == LinkStatus::Open {
+             (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+        }
+        else {
+             10.00f64.powi(20)
+        }
+       
+    }
+
     fn velocity(&self)-> Option<f64> {
         let v = match self.flow {
             Some(q) => Some((4.0*q)/(std::f64::consts::PI*self.diameter.powi(2))), 
@@ -38,18 +49,7 @@ impl Link for Pipe {
     fn link_type(&self)->LinkType {
         LinkType::Pipe
     }
-    
-    fn resistance(&self)->f64 {
-
-        if self.state == LinkStatus::Open {
-             (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
-        }
-        else {
-             10.00f64.powi(20)
-        }
-       
-    }
-
+   
     fn to_string(&self)-> String {
         format!("id: {}, name: {:?}, category: {:?} , {}--->{} : diametre: {}, length: {}, R: {}", self.id, self.name, self.link_type(), self.start, self.end, self.diameter, self.length, self.resistance())
     }    

@@ -206,7 +206,8 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
           iter+=1;
           if iter >= itermax {stoploop=true;}
          }
-          Some((_flowsq, _headsh, iter+1))
+
+         Some((_flowsq, _headsh, iter+1))
     }
     
 

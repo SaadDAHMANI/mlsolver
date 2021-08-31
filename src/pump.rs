@@ -44,10 +44,6 @@ impl Link for Pump {
         LinkType::Pump
     }
 
-    fn resistance(&self)->f64 {
-       -1.0f64
-    }
-
     fn to_string(&self)-> String {
         format!("id: {}, name: {:?}, category: {:?} , {}--->{}, Curve H-Q: {}Q^2 + {}Q + {}", 
         self.id, self.name, self.link_type(), self.start, self.end, self.alpha, self.beta, self.gamma)

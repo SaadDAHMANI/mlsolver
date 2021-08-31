@@ -15,6 +15,7 @@ include!("tank.rs");
 include!("reservoir.rs");
 include!("pipe.rs");
 include!("pump.rs");
+include!("valve.rs");
 include!("benchmark.rs");
 
 

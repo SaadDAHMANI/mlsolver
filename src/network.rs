@@ -5,10 +5,11 @@ pub struct Network {
     tanks : Vec<Tank>,
     reservoirs : Vec<Reservoir>,
     pumps : Vec<Pump>,
-    //valves : Option<Vec<Valve>>, 
+    valves : Vec<Valve>, 
 }
 
 impl Network {
+
      pub fn get_network(&self)-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
         
         let nn = self.junctions.len();
