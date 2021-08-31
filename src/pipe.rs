@@ -10,7 +10,7 @@ pub struct Pipe{
     c_hw : f64,
     flow : Option<f64>,
     //velocity : Option<f64>,
-    state : LinkState,
+    state : LinkStatus,
 
 }
 
@@ -40,7 +40,7 @@ impl Link for Pipe {
     }
     fn resistance(&self)->f64 {
 
-        if self.state == LinkState::Opened {
+        if self.state == LinkStatus::Open {
             (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
         }
         else {

@@ -7,14 +7,15 @@ pub enum LinkType {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub enum LinkState {
-    Opened,
+pub enum LinkStatus {
+    Open,
     Closed,
 }
 
 
 #[derive(Debug, Copy, Clone)]
 pub enum ValveType {
+
     FCV,
     PBV,
     PRV,

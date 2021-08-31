@@ -10,7 +10,7 @@ pub struct Pump{
     alpha : f64,
     beta : f64,
     gamma : f64,
-    state : LinkState,
+    state : LinkStatus,
 
 }
 
@@ -28,7 +28,7 @@ impl Pump {
      }
 
     fn get_rq(&self, flow : f64)->f64 {
-        if self.state == LinkState::Opened {
+        if self.state == LinkStatus::Open {
             self.alpha*flow.abs() + self.beta + (self.gamma/ flow.abs()) 
         } 
         else {
@@ -73,7 +73,7 @@ mod pump_tests {
             alpha : 10.0,
             beta : 20.0,
             gamma : 30.0,
-            state : LinkState::Opened,
+            state : LinkStatus::Open,
         };
 
         let _h = pmp1.head_of(0.017);
@@ -93,7 +93,7 @@ mod pump_tests {
             alpha : 10.0,
             beta : 20.0,
             gamma : 30.0,
-            state : LinkState::Closed,
+            state : LinkStatus::Closed,
         };
 
         assert_eq!(pmp1.get_rq(0.01), 10.00f64.powi(20));
