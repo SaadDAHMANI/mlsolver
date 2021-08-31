@@ -21,11 +21,11 @@ include!("benchmark.rs");
 fn main() {
     println!("Hello, mlsolver ()!");
 
-    let (a21, a10, h0, q, r) = network3().get_network();
+    let network = network3();
     
     let chronos = Instant::now();
     
-    let q_h = ml_solver(&a21, &a10, &h0, &q, &r );
+    let q_h = ml_solver(&network);
     
     let duration = chronos.elapsed();
 
@@ -56,6 +56,20 @@ fn main() {
     p2.flow = Some(0.017);
 
     println!("headloss : {:?}", p2.headloss());
+
+    let pmp = Pump {
+        id :3,
+    name : Some(String::from("Pump1")),
+    start : 1,
+    end : 2,
+    flow : Some(0.17),
+    head : None, 
+    alpha : 10.0,
+    beta : 20.0,
+    gamma : 30.0,
+    };
+
+    println!("{:?}, {:?} ", pmp.head(), pmp.head_of(0.017));
     
     
 }

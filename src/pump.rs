@@ -64,7 +64,7 @@ mod pump_tests {
         };
 
         let _h = pmp1.head_of(0.017);
-         let exp_h = 30.34289000000000;
+         let exp_h = 30.34289;
          assert_eq!(_h, exp_h);
     }
 }
