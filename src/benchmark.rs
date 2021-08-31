@@ -284,6 +284,7 @@ fn network4()->Network {
         alpha : 10.0,
         beta : 20.0,
         gamma : 30.0,
+        state : LinkState::Opened,
     };
 
     let ts = vec![t1, t2];
@@ -330,7 +331,7 @@ fn network5()-> Network {
 
     let mut j4 = j1.clone();
     j4.id = 4;
-    j4.demand = 0.0;
+    j4.demand = 0.3;
 
 
     let p1 = Pipe {
@@ -356,13 +357,13 @@ fn network5()-> Network {
     p3.id = 3;
     p3.start =0;
     p3.end = 2;
-    p3.state = LinkState::Closed;
+    p3.state = LinkState::Opened;
    
     let mut p4 = p1.clone();
     p4.id = 4;
     p4.start = 4;
     p4.end = 2;
-    p4.state = LinkState::Opened;
+    p4.state = LinkState::Closed;
 
 
     let pmp1 = Pump {
@@ -375,6 +376,7 @@ fn network5()-> Network {
         alpha : 10.0,
         beta : 20.0,
         gamma : 30.0,
+        state : LinkState::Opened,
     };
 
     let ts = vec![t1, t2];

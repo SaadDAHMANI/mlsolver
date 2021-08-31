@@ -6,17 +6,21 @@
 ## Development state
 **mlsolver** is currently able to solve water distribution networks with the following components :
 
--[x] Junctions (nodes with demands),
+- [x] Junctions (nodes with demands),
 
--[x] Pipes (Hazen-Williams head loss formula, State = Open).
+- [x] Pipes :
 
--[x] Tanks.
+   - Hazen-Williams head loss formula, 
+   
+   - State = Opened or Closed.
 
--[ ] Reservoirs.
+- [x] Tanks.
 
--[x] Pumps (H-Q characteristic equation : $H = αQ^2 + βQ + γ$ equation).
+- [ ] Reservoirs.
 
--[ ] Valves.
+- [x] Pumps (H-Q characteristic equation : $H = αQ^2 + βQ + γ$ equation).
+
+- [ ] Valves.
 
 -[ ] EPS (Extended Period Simulation). 
 

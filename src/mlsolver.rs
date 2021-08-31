@@ -464,6 +464,8 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
 
      //update A & B matrices for pumps :
 
+     println!("pump state {:?}, R = {}", network.pumps[0].state, network.pumps[0].get_rq(0.01));
+
     for i in 0..npmp {
 
         _intpart=flowsq[i]/deltaq;   

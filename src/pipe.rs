@@ -44,7 +44,7 @@ impl Link for Pipe {
             (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
         }
         else {
-            10.00f64.powi(15)
+            10.00f64.powi(20)
         }
        
     }
