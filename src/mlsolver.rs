@@ -82,7 +82,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
              //Updating A (eq13) & B (eq14):
     
              //update_a_b(&mut _a, &mut _b, &_flowsq, &r, deltaq, n);
-             update_matrices_a_b(&mut _a, &mut _b, &network, &_flowsq, deltaq, n);
+              update_matrices_a_b(&mut _a, &mut _b, &network, &_flowsq, deltaq, n)
              //let mut _intpart : f64 =0.0;
             
             //for i in 0..np {
@@ -440,6 +440,9 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     let mut _coef_a : f64 = 0.0;
     let mut _coef_b : f64 = 0.0;
     let _r = network.get_pipes_resistances();
+
+    println!("R1 = {}", _r[0]);
+    println!("R2 = {}", _r[1]);
 
     let npip = network.pipes.len();
     let npmp = network.pumps.len();

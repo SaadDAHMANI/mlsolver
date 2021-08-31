@@ -49,6 +49,7 @@ fn main() {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
+        state : LinkState::Opened,
         //velocity : None,
     };
     

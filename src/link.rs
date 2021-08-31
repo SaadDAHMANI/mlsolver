@@ -6,6 +6,13 @@ pub enum LinkType {
     Valve(ValveType),
 }
 
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub enum LinkState {
+    Opened,
+    Closed,
+}
+
+
 #[derive(Debug, Copy, Clone)]
 pub enum ValveType {
     FCV,

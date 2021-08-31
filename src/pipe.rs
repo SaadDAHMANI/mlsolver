@@ -10,6 +10,8 @@ pub struct Pipe{
     c_hw : f64,
     flow : Option<f64>,
     //velocity : Option<f64>,
+    state : LinkState,
+
 }
 
 impl Pipe {
@@ -22,15 +24,29 @@ impl Pipe {
         };
         hl
     }
-}
 
+    fn velocity(&self)-> Option<f64> {
+        let v = match self.flow {
+            Some(q) => Some((4.0*q)/(std::f64::consts::PI*self.diameter.powi(2))), 
+            None => None,
+        };
+        v
+    }
+}
 
 impl Link for Pipe {
     fn link_type(&self)->LinkType {
         LinkType::Pipe
     }
     fn resistance(&self)->f64 {
-        (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+
+        if self.state == LinkState::Opened {
+            (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+        }
+        else {
+            10.00f64.powi(15)
+        }
+       
     }
 
     fn to_string(&self)-> String {

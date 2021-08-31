@@ -151,6 +151,7 @@ fn network3()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
+        state : LinkState::Opened,
         //velocity : None,
     };
     
@@ -163,6 +164,7 @@ fn network3()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
+        state : LinkState::Opened,
         //velocity : None,
     };
     
@@ -175,6 +177,7 @@ fn network3()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
+        state : LinkState::Opened,
         //velocity :None,
     };
     
@@ -241,6 +244,7 @@ fn network4()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
+        state : LinkState::Opened,
         //velocity : None,
     };
     
@@ -253,6 +257,7 @@ fn network4()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
+        state : LinkState::Opened,
         //velocity : None,
     };
     
@@ -265,6 +270,7 @@ fn network4()->Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
+        state : LinkState::Opened,
         //velocity : None,
     };
     
@@ -336,6 +342,7 @@ fn network5()-> Network {
         diameter : 0.100,
         c_hw : 130.0,
         flow : None,
+        state : LinkState::Opened,
         //velocity : None,
     };
 
@@ -343,16 +350,20 @@ fn network5()-> Network {
     p2.id = 2;
     p2.start =1;
     p2.end = 2;
+    p2.state = LinkState::Opened;
 
     let mut p3 = p1.clone();
     p3.id = 3;
     p3.start =0;
     p3.end = 2;
-
+    p3.state = LinkState::Closed;
+   
     let mut p4 = p1.clone();
     p4.id = 4;
     p4.start = 4;
     p4.end = 2;
+    p4.state = LinkState::Opened;
+
 
     let pmp1 = Pump {
         id : 4,

@@ -8,7 +8,7 @@
 
 -[x] Junctions (nodes with demands),
 
--[x] Pipes (Hazen-Williams head loss formula).
+-[x] Pipes (Hazen-Williams head loss formula, State = Open).
 
 -[x] Tanks.
 
@@ -20,13 +20,12 @@
 
 -[ ] EPS (Extended Period Simulation). 
 
-
-
 ## Usage 
   
 
-## Licence
-MIT licence.
+## License
+
+MIT license.
 
 
  
