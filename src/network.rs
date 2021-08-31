@@ -70,12 +70,13 @@ impl Network {
             }                    
 
 
-        //junction demands :
-        let mut _q = vec![0.0f64; nn];
+         //junction demands :
+         //let mut _q = vec![0.0f64; nn];
+         //for i in 0..nn  {
+         //   _q[i]= self.junctions[i].demand;    
+         //}
 
-        for i in 0..nn  {
-            _q[i]= self.junctions[i].demand;    
-        }
+         let _q = self.get_demands();
 
         //H0 : reservoirs + tanks
         let mut _h0 = vec![0.0f64; no];
@@ -85,15 +86,46 @@ impl Network {
         }
 
         //resistance for pipes
-        let mut _r = vec![0.0f64; npip];
+        //let mut _r = vec![0.0f64; npip];
 
-         for j in 0..npip  {
-             _r[j]= self.pipes[j].resistance();
-         }
+         //for j in 0..npip  {
+         //    _r[j]= self.pipes[j].resistance();
+         //}
+         let _r = self.get_pipes_resistances();
        
         (_a21, _a10, _h0, _q, _r,)
 
      }
+
+     pub fn get_pipes_resistances(&self)-> Vec<f64> {
+          //resistance for pipes
+        let mut _r = vec![0.0f64; self.pipes.len()];
+
+        for j in 0..self.pipes.len() {
+            _r[j]= self.pipes[j].resistance();
+        }
+
+        _r
+     }
+
+
+     pub fn get_demands(&self)->Vec<f64> {
+
+        let mut _q = vec![0.0f64; self.junctions.len()];
+
+        for i in 0..self.junctions.len(){
+            _q[i]= self.junctions[i].demand;    
+        }
+        _q
+     }
+
+     pub fn get_max_demand(&self)->f64 {
+         self.get_demands().iter().sum()
+     }
+
+
+
+
 }
 
 

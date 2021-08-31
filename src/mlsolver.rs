@@ -19,7 +19,6 @@ use peroxide::prelude::*;
 
 pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
 
-
     let (a21, a10, h0, q, r) = network.get_network();
 
     let nn = a21.len();
@@ -67,23 +66,23 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     
       // initilize A & B if the first iteration
       if iter==0 {
-        // step 1 : establish A & B using eq.19
-        // 1.1- initilize A matrix :
-         initilize_a(&mut _a, & r, qmax);
-      
+         // step 1 : establish A & B using eq.19
+         // 1.1- initilize A matrix :
+         //initilize_a(&mut _a, & r, qmax);
+         initilize_a_matrix(&mut _a, &network);
          //print(&_a,&"[A]");
         
-        // 1.2- initiliza B matrix :
+         // 1.2- initiliza B matrix :
             
-          //print_vector(&_b, &"[B]");      
+         //print_vector(&_b, &"[B]");      
          }
     
         else {
              
              //Updating A (eq13) & B (eq14):
     
-             update_a_b(&mut _a, &mut _b, &_flowsq, &r, deltaq, n);
-    
+             //update_a_b(&mut _a, &mut _b, &_flowsq, &r, deltaq, n);
+             update_matrices_a_b(&mut _a, &mut _b, &network, &_flowsq, deltaq, n);
              //let mut _intpart : f64 =0.0;
             
             //for i in 0..np {
@@ -402,17 +401,84 @@ while stoploop == false {
       Some((_flowsq, _headsh, iter+1))
 }
 
-fn initilize_a(result : &mut Vec<Vec<f64>>,  resistance : &Vec<f64>, qmax : f64) {
+fn initilize_a_matrix(result_a : &mut Vec<Vec<f64>>, network : &Network) {
+
+    let npip = network.pipes.len();
+    let npmp = network.pumps.len();
+    //let np = npip+npmp;
+    let rspipes = network.get_pipes_resistances();
+    let qmax = network.get_max_demand();
     
-    let np = resistance.len();
-     if result.len() == np {
-        if result[0].len()==np {
+    for i in 0..npip {
+         result_a[i][i] =rspipes[i]*qmax;
+    }
+
+    for i in 0..npmp {
+        result_a[i+npip][i+npip]= network.pumps[i].alpha*qmax + network.pumps[i].beta + network.pumps[i].gamma/qmax;
+    } 
+
+} 
+
+
+
+fn initilize_a(result_a : &mut Vec<Vec<f64>>, pipe_resistance : &Vec<f64>, qmax : f64) {
+    
+    let np = pipe_resistance.len();
+     if result_a.len() == np {
+        if result_a[0].len()==np {
              for i in 0..np {
-                 result[i][i]= resistance[i]*qmax;
+                 result_a[i][i]= pipe_resistance[i]*qmax;
              }
          }
      }
+    }
+
+
+fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Network, flowsq : &Vec<f64>, deltaq : f64, n : f64) {
+
+    let mut _intpart : f64 = 0.0;
+    let mut _coef_a : f64 = 0.0;
+    let mut _coef_b : f64 = 0.0;
+    let _r = network.get_pipes_resistances();
+
+    let npip = network.pipes.len();
+    let npmp = network.pumps.len();
+                     
+    //update A & B matrices for pipes :
+
+    for i in 0..npip {
+         _intpart=flowsq[i]/deltaq;   
+         _coef_a = f64::trunc(_intpart)*deltaq;
+         _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i]))*deltaq;
+    
+          //Updating A (eq13):
+         _intpart =(f64::powf(_coef_b, n)- f64::powf(_coef_a, n))/(_coef_b - _coef_a);
+         a[i][i]=f64::signum(flowsq[i])*_r[i]*_intpart;
+        
+         //Updating B (eq14):
+         b[i]=-1.0*f64::signum(flowsq[i])*_r[i]*(_intpart*_coef_a - f64::powf(_coef_a,n));  
+       } 
+
+     //update A & B matrices for pumps :
+
+    for i in 0..npmp {
+
+        _intpart=flowsq[i]/deltaq;   
+         _coef_a = f64::trunc(_intpart)*deltaq;
+         _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i+npip]))*deltaq;
+    
+          //Updating A (eq13):
+         _intpart =(f64::powf(_coef_b, n)- f64::powf(_coef_a, n))/(_coef_b - _coef_a);
+         a[i+npip][i+npip]=f64::signum(flowsq[i+npip])*_intpart* network.pumps[i].get_rq(flowsq[i+npip]);
+        
+         //Updating B (eq14):
+         b[i+npip]=-1.0*f64::signum(flowsq[i+npip])*network.pumps[i].get_rq(flowsq[i+npip])*(_intpart*_coef_a - f64::powf(_coef_a,n));          
+
+    }   
+
+      //update A & B matrices for valves :
 }
+
 
 fn update_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, flowsq : &Vec<f64>, r : &Vec<f64>, deltaq : f64, n : f64) {
 

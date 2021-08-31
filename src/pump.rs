@@ -24,6 +24,10 @@ impl Pump {
         };
         _hq
      }
+
+    fn get_rq(&self, flow : f64)->f64{
+        return self.alpha*flow + self.beta + self.gamma/ flow; 
+    } 
 }
 
 
