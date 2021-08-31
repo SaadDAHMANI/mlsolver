@@ -3,7 +3,7 @@ pub struct Network {
     junctions : Vec<Junction>,
     pipes : Vec<Pipe>,
     tanks : Vec<Tank>,
-    reservoirs : Option <Vec<Reservoir>>,
+    reservoirs : Vec<Reservoir>,
     pumps : Vec<Pump>,
     //valves : Option<Vec<Valve>>, 
 }
@@ -12,7 +12,14 @@ impl Network {
      pub fn get_network(&self)-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
         
         let nn = self.junctions.len();
-        let no = self.tanks.len();
+        let nt = self.tanks.len();
+        let nr = self.reservoirs.len();
+        //let nr = match &self.reservoirs {
+        //    Some(reservoirs) => reservoirs.len(),
+        //    None => 0, 
+        //};
+
+        let no = nt + nr;
 
         let npip = self.pipes.len();
         let npmp = self.pumps.len();
@@ -46,9 +53,9 @@ impl Network {
 
         //Matrix A10 
         let mut _a10 = vec![vec![0.0f64; no]; np];
-
        
-            for j in 0..no {
+        // Tanks
+            for j in 0..nt {
                 
                 for i in 0..npip {
                     if self.pipes[i].start == self.tanks[j].id {
@@ -67,8 +74,32 @@ impl Network {
                         _a10[i+npip][j] = 1.0;
                     }
                 } 
-            }                    
+            }
+            
+             // Reservoirs 
 
+             for j in 0..nr {
+                
+                for i in 0..npip {
+                    if self.pipes[i].start == self.reservoirs[j].id {
+                        _a10[i][j+nt] = -1.0;
+                    }
+                    else if self.pipes[i].end == self.reservoirs[j].id {
+                        _a10[i][j+nt] = 1.0;
+                    }
+                }
+                
+                for i in 0..npmp {
+                    if self.pumps[i].start == self.reservoirs[j].id {
+                        _a10[i+npip][j+nt] = -1.0;
+                    }
+                    else if self.pumps[i].end == self.reservoirs[j].id {
+                        _a10[i+npip][j+nt] = 1.0;
+                    }
+                } 
+            }
+            
+          
 
          //junction demands :
          //let mut _q = vec![0.0f64; nn];
@@ -80,11 +111,14 @@ impl Network {
 
         //H0 : reservoirs + tanks
         let mut _h0 = vec![0.0f64; no];
-        
-        for k in 0..no{
+        for k in 0..nt{
             _h0[k] = self.tanks[k].head;
         }
 
+        for k in 0..nr{
+            _h0[k+nt] = self.reservoirs[k].head;
+        }
+       
         //resistance for pipes
         //let mut _r = vec![0.0f64; npip];
 

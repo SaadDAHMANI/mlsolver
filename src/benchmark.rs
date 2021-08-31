@@ -185,12 +185,14 @@ fn network3()->Network {
     let js = vec![j1,j2];
     let ps = vec![p1,p2,p3];
     let pms = vec![];
+    let rs = vec![];
+
 
     let net3 = Network {
         junctions :js,
         pipes : ps,
         tanks : ts,
-        reservoirs : None,
+        reservoirs : rs,
         pumps : pms,
     };
 
@@ -291,12 +293,13 @@ fn network4()->Network {
     let js = vec![j1, j2];
     let ps = vec![p1, p2, p3];
     let pms = vec![pmp1];
+    let rs = vec![];
 
     let net4 = Network {
         junctions :js,
         pipes : ps,
         tanks : ts,
-        reservoirs : None,
+        reservoirs : rs,
         pumps : pms,
     };
 
@@ -313,9 +316,14 @@ fn network5()-> Network {
 
     };
 
-    let mut t2 = t1.clone();
-    t2.id =3;
-    t2.head = 100.0;
+    let r1 = Reservoir {
+        id : 3,
+        name : Some (String::from("T1")),
+        elevation : 0.0,
+        head : 100.0,
+        pressure : None,
+
+    };
 
     let j1 = Junction {
         id : 1,
@@ -363,7 +371,7 @@ fn network5()-> Network {
     p4.id = 4;
     p4.start = 4;
     p4.end = 2;
-    p4.state = LinkState::Closed;
+    p4.state = LinkState::Opened;
 
 
     let pmp1 = Pump {
@@ -379,16 +387,17 @@ fn network5()-> Network {
         state : LinkState::Opened,
     };
 
-    let ts = vec![t1, t2];
+    let ts = vec![t1];
     let js = vec![j1, j2, j4];
     let ps = vec![p1, p2, p3, p4];
     let pms = vec![pmp1];
+    let rvs = vec![r1];
 
     let net5 = Network {
         junctions :js,
         pipes : ps,
         tanks : ts,
-        reservoirs : None,
+        reservoirs : rvs,
         pumps : pms,
     };
 
