@@ -6,11 +6,9 @@ pub struct Valve{
     start : usize,
     end : usize,
     linktype : LinkType,
-    length : f64,
     diameter : f64,
-    c_hw : f64,
     flow : Option<f64>,
-    velocity : Option<f64>,
+  
 }
 
 

@@ -38,13 +38,14 @@ impl Link for Pipe {
     fn link_type(&self)->LinkType {
         LinkType::Pipe
     }
+    
     fn resistance(&self)->f64 {
 
         if self.state == LinkStatus::Open {
-            (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+             (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
         }
         else {
-            10.00f64.powi(20)
+             10.00f64.powi(20)
         }
        
     }

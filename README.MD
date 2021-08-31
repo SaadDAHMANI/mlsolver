@@ -12,7 +12,7 @@
 
    - Hazen-Williams head loss formula, 
    
-   - State = Opened or Closed.
+   - Status = Open or Closed.
 
 - [x] Tanks.
 
@@ -21,6 +21,14 @@
 - [x] Pumps (H-Q characteristic equation : $H = αQ^2 + βQ + γ$ equation).
 
 - [ ] Valves.
+ 
+   - [ ] CV : Check Valve.
+   - [ ] FCV : Flow Control Valve.
+   - [ ] PRV : Pressure Reducing Valve. 
+   - [ ] PSV : Pressure Sustaining Valve.
+   - [ ] TCV : Throttle Control Valve.
+   - [ ] PBV : Pressure Breaker Valve.
+   - [ ] GPV : General Purpose Valve.   
 
 -[ ] EPS (Extended Period Simulation). 
 
