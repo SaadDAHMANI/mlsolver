@@ -209,7 +209,7 @@ fn network4()->Network {
         id :3,
         name : Some (String::from("T2")),
         elevation : 0.0,
-        head : 50.0,
+        head : 100.0,
         pressure : None,
 
     };
@@ -295,4 +295,90 @@ fn network4()->Network {
 
      net4
 }
+
+fn network5()-> Network {
+    let t1 = Tank {
+        id :0,
+        name : Some (String::from("T1")),
+        elevation : 0.0,
+        head : 100.0,
+        pressure : None,
+
+    };
+
+    let mut t2 = t1.clone();
+    t2.id =3;
+    t2.head = 100.0;
+
+    let j1 = Junction {
+        id : 1,
+        name : Some(String::from("J1")),
+        elevation : 0.0,
+        demand : 0.1,
+        head : None,
+        pressure : None,
+    };
+
+    let mut j2 = j1.clone();
+    j2.id =2;
+
+    let mut j4 = j1.clone();
+    j4.id = 4;
+    j4.demand = 0.0;
+
+
+    let p1 = Pipe {
+        id : 1,
+        name :  Some(String::from("P1")),
+        start : 0,
+        end : 1,
+        length : 100.0,
+        diameter : 0.100,
+        c_hw : 130.0,
+        flow : None,
+        //velocity : None,
+    };
+
+    let mut p2 = p1.clone();
+    p2.id = 2;
+    p2.start =1;
+    p2.end = 2;
+
+    let mut p3 = p1.clone();
+    p3.id = 3;
+    p3.start =0;
+    p3.end = 2;
+
+    let mut p4 = p1.clone();
+    p4.id = 4;
+    p4.start = 4;
+    p4.end = 2;
+
+    let pmp1 = Pump {
+        id : 4,
+        name : Some(String::from("Pump1")),
+        start : 3,
+        end : 4,
+        flow : None,
+        head : None, 
+        alpha : 10.0,
+        beta : 20.0,
+        gamma : 30.0,
+    };
+
+    let ts = vec![t1, t2];
+    let js = vec![j1, j2, j4];
+    let ps = vec![p1, p2, p3, p4];
+    let pms = vec![pmp1];
+
+    let net5 = Network {
+        junctions :js,
+        pipes : ps,
+        tanks : ts,
+        reservoirs : None,
+        pumps : pms,
+    };
+
+     net5
+} 
 

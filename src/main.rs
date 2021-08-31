@@ -21,7 +21,7 @@ include!("benchmark.rs");
 fn main() {
     println!("Hello, mlsolver ()!");
 
-    let network = network3();
+    let network = network5();
     
     let chronos = Instant::now();
     
