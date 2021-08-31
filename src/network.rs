@@ -24,7 +24,9 @@ impl Network {
 
         let npip = self.pipes.len();
         let npmp = self.pumps.len();
-        let np = npip+npmp;
+        let nvlv = self.valves.len();
+
+        let np = npip + npmp + nvlv;
 
         //Matrix A21 
         let mut _a21 = vec![vec![0.0f64; np]; nn];
@@ -50,6 +52,17 @@ impl Network {
                     _a21[i][k+npip]= 1.0;  
                    }
                } 
+
+               // Valves :
+               for k in 0..nvlv {
+                if self.valves[k].start == self.junctions[i].id {
+                    _a21[i][k+npip+npmp]=-1.0;
+                } 
+                else if self.valves[k].end == self.junctions[i].id {
+                 _a21[i][k+npip+npmp]= 1.0;  
+                }
+            }
+
         }
 
         //Matrix A10 
@@ -58,6 +71,7 @@ impl Network {
         // Tanks
             for j in 0..nt {
                 
+                // Tanks -Pipes
                 for i in 0..npip {
                     if self.pipes[i].start == self.tanks[j].id {
                         _a10[i][j] = -1.0;
@@ -66,7 +80,8 @@ impl Network {
                         _a10[i][j] = 1.0;
                     }
                 }
-                
+
+                // Tanks - Pumps
                 for i in 0..npmp {
                     if self.pumps[i].start == self.tanks[j].id {
                         _a10[i+npip][j] = -1.0;
@@ -75,12 +90,23 @@ impl Network {
                         _a10[i+npip][j] = 1.0;
                     }
                 } 
+
+                // Tanks - Valves 
+                for i in 0..nvlv {
+                    if self.valves[i].start == self.tanks[j].id {
+                        _a10[i+npip+npmp][j] = -1.0;
+                    }
+                    else if self.valves[i].end == self.tanks[j].id {
+                        _a10[i+npip+npmp][j] = 1.0;
+                    }
+                } 
             }
             
              // Reservoirs 
 
              for j in 0..nr {
                 
+                 // Reservoirs - Pipes
                 for i in 0..npip {
                     if self.pipes[i].start == self.reservoirs[j].id {
                         _a10[i][j+nt] = -1.0;
@@ -90,6 +116,7 @@ impl Network {
                     }
                 }
                 
+                // Reservoirs - Pumps
                 for i in 0..npmp {
                     if self.pumps[i].start == self.reservoirs[j].id {
                         _a10[i+npip][j+nt] = -1.0;
@@ -98,8 +125,18 @@ impl Network {
                         _a10[i+npip][j+nt] = 1.0;
                     }
                 } 
-            }
-            
+
+                // Reservoirs - Valves 
+                for i in 0..nvlv {
+                    if self.valves[i].start == self.reservoirs[j].id {
+                        _a10[i+npip+npmp][j+nt] = -1.0;
+                    }
+                    else if self.valves[i].end == self.reservoirs[j].id {
+                        _a10[i+npip+npmp][j+nt] = 1.0;
+                    }
+                } 
+                
+            }          
           
 
          //junction demands :

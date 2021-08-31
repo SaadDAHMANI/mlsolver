@@ -29,7 +29,7 @@ impl Pump {
 
     fn get_rq(&self, flow : f64)->f64 {
         if self.state == LinkStatus::Open {
-            self.alpha*flow.abs() + self.beta + (self.gamma/ flow.abs()) 
+            self.alpha*flow + self.beta + (self.gamma/ flow) 
         } 
         else {
             10.00f64.powi(20)

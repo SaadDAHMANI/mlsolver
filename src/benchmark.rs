@@ -410,3 +410,116 @@ fn network5()-> Network {
      net5
 } 
 
+//network with CV (Check Valve)
+fn network6()-> Network {
+    let t1 = Tank {
+        id :0,
+        name : Some (String::from("T1")),
+        elevation : 0.0,
+        head : 100.0,
+        pressure : None,
+
+    };
+
+    let r1 = Reservoir {
+        id : 3,
+        name : Some (String::from("T1")),
+        elevation : 0.0,
+        head : 100.0,
+        pressure : None,
+
+    };
+
+    let j1 = Junction {
+        id : 1,
+        name : Some(String::from("J1")),
+        elevation : 0.0,
+        demand : 0.1,
+        head : None,
+        pressure : None,
+    };
+
+    let mut j2 = j1.clone();
+    j2.id =2;
+
+    let mut j4 = j1.clone();
+    j4.id = 4;
+    j4.demand = 0.3;
+
+
+    let p1 = Pipe {
+        id : 1,
+        name :  Some(String::from("P1")),
+        start : 0,
+        end : 1,
+        length : 100.0,
+        diameter : 0.100,
+        c_hw : 130.0,
+        flow : None,
+        state : LinkStatus::Open,
+        //velocity : None,
+    };
+
+    //let mut p2 = p1.clone();
+    //p2.id = 2;
+    //p2.start =1;
+    //p2.end = 2;
+    //p2.state = LinkStatus::Open;
+
+    let mut p3 = p1.clone();
+    p3.id = 3;
+    p3.start =0;
+    p3.end = 2;
+    p3.state = LinkStatus::Open;
+   
+    let mut p4 = p1.clone();
+    p4.id = 4;
+    p4.start = 4;
+    p4.end = 2;
+    p4.state = LinkStatus::Open;
+
+    let v1 = Valve {
+        id : 5,
+        name : Some(String::from("V1")),
+        start : 1,
+        end : 2,
+        diameter : 0.100,
+        flow : None,
+        k_value : 1.0,
+        valvetype : ValveType::CV,
+        status : LinkStatus::Open,         
+    };  
+
+    let pmp1 = Pump {
+        id : 4,
+        name : Some(String::from("Pump1")),
+        start : 3,
+        end : 4,
+        flow : None,
+        head : None, 
+        alpha : 10.0,
+        beta : 20.0,
+        gamma : 30.0,
+        state : LinkStatus::Open,
+    };
+
+    let ts = vec![t1];
+    let js = vec![j1, j2, j4];
+    let ps = vec![p1, p3, p4];
+    let pms = vec![pmp1];
+    let rvs = vec![r1];
+    let vlvs = vec![v1];
+
+    let net6 = Network {
+        junctions :js,
+        pipes : ps,
+        tanks : ts,
+        reservoirs : rvs,
+        pumps : pms,
+        valves : vlvs,
+    };
+
+     net6
+} 
+
+

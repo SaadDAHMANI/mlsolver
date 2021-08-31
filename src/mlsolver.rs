@@ -406,17 +406,26 @@ fn initilize_a_matrix(result_a : &mut Vec<Vec<f64>>, network : &Network) {
 
     let npip = network.pipes.len();
     let npmp = network.pumps.len();
+    let nvlv = network.valves.len();
     //let np = npip+npmp;
     let rspipes = network.get_pipes_resistances();
     let qmax = network.get_max_demand();
     
+    // Pipes resistances
     for i in 0..npip {
          result_a[i][i] =rspipes[i]*qmax;
     }
-
+    
+    // Pumps resistances 
     for i in 0..npmp {
-        result_a[i+npip][i+npip]= network.pumps[i].alpha*qmax + network.pumps[i].beta + network.pumps[i].gamma/qmax;
+        // result_a[i+npip][i+npip]= network.pumps[i].alpha*qmax + network.pumps[i].beta + network.pumps[i].gamma/qmax;
+        result_a[i+npip][i+npip]= network.pumps[i].get_rq(qmax);
     } 
+
+    // Valves resistances 
+    for i in 0..nvlv {
+        result_a[i+npip+npmp][i+npip+npmp] = network.valves[i].get_rq(qmax);
+    }
 
 } 
 
@@ -447,6 +456,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
 
     let npip = network.pipes.len();
     let npmp = network.pumps.len();
+    let nvlv = network.valves.len();
                      
     //update A & B matrices for pipes :
 
@@ -465,7 +475,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
 
      //update A & B matrices for pumps :
 
-     println!("pump state {:?}, R = {}", network.pumps[0].state, network.pumps[0].get_rq(0.01));
+     //println!("pump state {:?}, R = {}", network.pumps[0].state, network.pumps[0].get_rq(0.01));
 
     for i in 0..npmp {
 
@@ -483,6 +493,23 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     }   
 
       //update A & B matrices for valves :
+
+      for i in 0..nvlv {
+
+        _intpart=flowsq[i]/deltaq;   
+         _coef_a = f64::trunc(_intpart)*deltaq;
+         _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i+npip]))*deltaq;
+    
+          //Updating A (eq13):
+         _intpart =(f64::powf(_coef_b, n)- f64::powf(_coef_a, n))/(_coef_b - _coef_a);
+         a[i+npip+npmp][i+npip+npmp]=f64::signum(flowsq[i+npip+npmp])*_intpart* network.valves[i].get_rq(flowsq[i+npip+npmp]);
+        
+         //Updating B (eq14):
+         b[i+npip+npmp]=-1.0*f64::signum(flowsq[i+npip+npmp])*network.valves[i].get_rq(flowsq[i+npip+npmp])*(_intpart*_coef_a - f64::powf(_coef_a,n));          
+
+    }   
+
+
 }
 
 
