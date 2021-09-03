@@ -36,6 +36,30 @@ impl Pipe {
        
     }
 
+    fn get_r_of_q(&self, flow : f64)->f64 {
+
+        if self.state == LinkStatus::Open {
+            
+            if self.check_valve { 
+                 if flow < 0.0 {
+                      99.99f64.powi(20)
+                 }
+                 else {
+                    (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+                 }
+             }
+
+            else {
+                (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+                }
+           
+        }
+        else {
+             99.99f64.powi(20)
+        }       
+    }
+
+
     fn velocity(&self)-> Option<f64> {
         let v = match self.flow {
             Some(q) => Some((4.0*q)/(std::f64::consts::PI*self.diameter.powi(2))), 
