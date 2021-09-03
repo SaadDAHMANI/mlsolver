@@ -12,7 +12,9 @@
 
    - Hazen-Williams head loss formula, 
    
-   - Status = Open or Closed.
+   - Status : Open or Closed.
+   
+   - Check valve (CV) : With (true) or Without (false).  
 
 - [x] Tanks.
 
@@ -30,7 +32,9 @@
    - [ ] PBV : Pressure Breaker Valve.
    - [ ] GPV : General Purpose Valve.   
 
--[ ] EPS (Extended Period Simulation). 
+-[ ] EPS (Extended Period Simulation).
+
+-[ ] PDA (Pressure-Dependent Analysis).
 
 ## Usage 
   
