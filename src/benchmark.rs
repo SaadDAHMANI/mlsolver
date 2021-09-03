@@ -166,7 +166,7 @@ fn network3()->Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
-        check_valve : false,
+        check_valve : true,
         //velocity : None,
     };
     
@@ -440,7 +440,7 @@ fn network6()-> Network {
         id : 1,
         name : Some(String::from("J1")),
         elevation : 0.0,
-        demand : 0.1,
+        demand : 0.01,
         head : None,
         pressure : None,
     };
@@ -450,7 +450,7 @@ fn network6()-> Network {
 
     let mut j4 = j1.clone();
     j4.id = 4;
-    j4.demand = 0.3;
+    j4.demand = 0.01;
 
 
     let p1 = Pipe {
@@ -504,7 +504,7 @@ fn network6()-> Network {
         end : 4,
         flow : None,
         head : None, 
-        alpha : 10.0,
+        alpha : 50.0,
         beta : 20.0,
         gamma : 30.0,
         state : LinkStatus::Open,
