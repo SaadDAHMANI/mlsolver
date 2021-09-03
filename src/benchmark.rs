@@ -128,7 +128,7 @@ fn network3()->Network {
         id : 1,
         name : Some(String::from("J1")),
         elevation : 0.0,
-        demand : 0.1,
+        demand : 0.02,
         head : None,
         pressure : None,
     };
@@ -137,7 +137,7 @@ fn network3()->Network {
         id : 2,
         name : Some(String::from("J2")),
         elevation : 0.0,
-        demand : 0.1,
+        demand : 0.01,
         head : None,
         pressure : None,
     };
