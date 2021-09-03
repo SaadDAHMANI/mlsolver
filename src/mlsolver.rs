@@ -449,10 +449,10 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     let mut _intpart : f64 = 0.0;
     let mut _coef_a : f64 = 0.0;
     let mut _coef_b : f64 = 0.0;
-    let _r = network.get_pipes_resistances();
+    //let _r = network.get_pipes_resistances();
 
-    println!("R1 = {}", _r[0]);
-    println!("R2 = {}", _r[1]);
+    //println!("R1 = {}", _r[0]);
+    //println!("R2 = {}", _r[1]);
 
     let npip = network.pipes.len();
     let npmp = network.pumps.len();
@@ -467,10 +467,12 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     
           //Updating A (eq13):
          _intpart =(f64::powf(_coef_b, n)- f64::powf(_coef_a, n))/(_coef_b - _coef_a);
-         a[i][i]=f64::signum(flowsq[i])*_r[i]*_intpart;
-        
+         //a[i][i]=f64::signum(flowsq[i])*_r[i]*_intpart;
+         a[i][i]=f64::signum(flowsq[i])* network.pipes[i].get_r_of_q(flowsq[i])*_intpart;
+
          //Updating B (eq14):
-         b[i]=-1.0*f64::signum(flowsq[i])*_r[i]*(_intpart*_coef_a - f64::powf(_coef_a,n));  
+          //b[i]=-1.0*f64::signum(flowsq[i])*_r[i]*(_intpart*_coef_a - f64::powf(_coef_a,n)); 
+          b[i]=-1.0*f64::signum(flowsq[i])*network.pipes[i].get_r_of_q(flowsq[i])*(_intpart*_coef_a - f64::powf(_coef_a,n));  
        } 
 
      //update A & B matrices for pumps :
