@@ -15,7 +15,6 @@ pub enum LinkStatus {
 
 #[derive(Debug, Copy, Clone)]
 pub enum ValveType {
-    CV,
     FCV,
     PBV,
     PRV,

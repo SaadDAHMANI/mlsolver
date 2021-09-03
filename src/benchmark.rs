@@ -152,6 +152,7 @@ fn network3()->Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
+        check_valve : false,
         //velocity : None,
     };
     
@@ -165,6 +166,7 @@ fn network3()->Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
+        check_valve : false,
         //velocity : None,
     };
     
@@ -178,6 +180,7 @@ fn network3()->Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
+        check_valve : false,
         //velocity :None,
     };
     
@@ -249,6 +252,7 @@ fn network4()->Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
+        check_valve : false,
         //velocity : None,
     };
     
@@ -262,6 +266,7 @@ fn network4()->Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
+        check_valve : false,
         //velocity : None,
     };
     
@@ -275,6 +280,7 @@ fn network4()->Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
+        check_valve : false,
         //velocity : None,
     };
     
@@ -345,7 +351,6 @@ fn network5()-> Network {
     j4.id = 4;
     j4.demand = 0.3;
 
-
     let p1 = Pipe {
         id : 1,
         name :  Some(String::from("P1")),
@@ -356,6 +361,7 @@ fn network5()-> Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
+        check_valve : false,
         //velocity : None,
     };
 
@@ -457,6 +463,7 @@ fn network6()-> Network {
         c_hw : 130.0,
         flow : None,
         state : LinkStatus::Open,
+        check_valve : false,
         //velocity : None,
     };
 
@@ -486,7 +493,7 @@ fn network6()-> Network {
         diameter : 0.100,
         flow : None,
         k_value : 1.0,
-        valvetype : ValveType::CV,
+        valvetype : ValveType::FCV,
         status : LinkStatus::Open,         
     };  
 

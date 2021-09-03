@@ -1,6 +1,6 @@
 
 #[derive(Debug, Clone)]
-pub struct Pipe{
+pub struct Pipe {
     id : usize,
     name : Option<String>,
     start : usize,
@@ -11,7 +11,7 @@ pub struct Pipe{
     flow : Option<f64>,
     //velocity : Option<f64>,
     state : LinkStatus,
-
+    check_valve : bool, 
 }
 
 impl Pipe {

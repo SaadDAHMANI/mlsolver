@@ -30,7 +30,7 @@ impl Valve {
         if self.status==LinkStatus::Open {
 
             let rq : f64 = match self.valvetype {
-                ValveType::CV => {
+                ValveType::FCV => {
                         if flow > 0.0 {self.k_value*flow }
                         else { 10.0f64.powi(15) }                    
                 } 
