@@ -16,7 +16,7 @@
 
 - [x] Tanks.
 
-- [ ] Reservoirs.
+- [x] Reservoirs.
 
 - [x] Pumps (H-Q characteristic equation : $H = αQ^2 + βQ + γ$ equation).
 
