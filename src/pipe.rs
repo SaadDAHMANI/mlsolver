@@ -19,7 +19,7 @@ impl Pipe {
     fn headloss(&self)-> Option<f64> {
 
         let hl = match self.flow {
-            Some(q) => Some(self.resistance()*q.powf(1.85)), 
+            Some(q) => Some(self.resistance()*q.powf(1.852)), 
             None => None,
         };
         hl
@@ -45,12 +45,12 @@ impl Pipe {
                       99.99f64.powi(20)
                  }
                  else {
-                    (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+                    (10.675*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
                  }
              }
 
             else {
-                (10.67*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
+                (10.675*self.length)/(self.c_hw.powf(1.852)*self.diameter.powf(4.8704))
                 }
            
         }
