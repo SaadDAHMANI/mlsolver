@@ -29,7 +29,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     
     let mut iter : usize =0;
     let itermax : usize = 40; 
-    let objective_err : f64 =0.000000001;
+    let objective_err : f64 =0.000001;
     
      let mut _a = vec![vec![0.0f64; np]; np]; //A
      let mut _b =vec![0.0f64; np]; // B
@@ -244,8 +244,6 @@ fn initilize_a_matrix(result_a : &mut Vec<Vec<f64>>, network : &Network) {
     }
 
 } 
-
-
 
 
 fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Network, flowsq : &Vec<f64>, deltaq : f64, n : f64) {

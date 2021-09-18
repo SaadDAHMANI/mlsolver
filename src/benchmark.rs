@@ -12,7 +12,7 @@ fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
 
     let mut a21 = vec![vec![0.0f64; np]; nn];
     
-    a21[0][0] =1.0f64;     
+    a21[0][0] =1.0f64;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
     a21[0][2] =-1.0f64;
     a21[0][3] =-1.0f64;
     a21[0][4] =-1.0f64;
@@ -56,6 +56,111 @@ fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
  
 }
 
+fn network7()->Network {
+    let t1 = Tank {
+        id :0,
+        name : Some (String::from("T1")),
+        elevation : 0.0,
+        head : 100.0,
+        pressure : None,
+
+    };
+
+    let j1 = Junction {
+        id : 1,
+        name : Some(String::from("J1")),
+        elevation : 0.0,
+        demand : 0.1,
+        head : None,
+        pressure : None,
+    };
+    
+    let mut j2 = j1.clone();
+    j2.id =2;
+    j2.demand= 0.2;
+
+    let mut j3 = j1.clone();
+    j3.id =3;
+    j3.demand= 0.3;
+
+    let mut j4 = j1.clone();
+    j4.id =4;
+    j4.demand= 0.4;
+
+    let p1 = Pipe {
+        id : 1,
+        name :  Some(String::from("P1")),
+        start : 0,
+        end : 1,
+        length : 41.15,
+        diameter : 0.500,
+        c_hw : 130.0,
+        flow : None,
+        state : LinkStatus::Open,
+        check_valve : false,
+        //velocity : None,
+    };
+
+    let mut p2 = p1.clone();
+     p2.id=2;
+     p2.start =0;
+     p2.end = 2;
+     p2.diameter =0.2;
+     p2.length =15.18;
+
+
+     let mut p3 = p2.clone();
+     p3.id=3;
+     p3.start =1;
+     p3.end = 2;
+     p3.length =30.37;
+     
+     let mut p4 = p2.clone();
+     p4.id=4;
+     p4.start =1;
+     p4.end = 3;
+     p4.length =3.80;
+
+        
+     let mut p5 = p2.clone();
+     p5.id=5 ;
+     p5.start =1;
+     p5.end = 4;
+     p5.length =22.77;
+                 
+     let mut p6 = p2.clone();
+     p6.id=6 ;
+     p6.start =2;
+     p6.end = 4;
+     p6.length =60.73;
+
+             
+     let mut p7 = p2.clone();
+     p7.id=7 ;
+     p7.start =3;
+     p7.end = 4;
+     p7.length =30.37;
+
+     let ts = vec![t1];
+     let js = vec![j1,j2, j3, j4];
+     let ps = vec![p1,p2,p3,p4,p5,p6,p7];
+     let pms = vec![];
+     let rs = vec![];
+     let vlvs = vec![];
+ 
+ 
+     let net = Network {
+         junctions :js,
+         pipes : ps,
+         tanks : ts,
+         reservoirs : rs,
+         pumps : pms,
+         valves : vlvs,
+     };
+ 
+     net
+
+}
 
 // network2() : return two (02) reservoir network
 fn network2()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
