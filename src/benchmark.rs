@@ -529,4 +529,105 @@ fn network6()-> Network {
      net6
 } 
 
+// Network 2 (Todini et al., 2021) Pressure Flow-Based Algo for PD analysis of WDN (J. Water Resour.Plann.Manage.)
+
+fn network2_todini()-> Network {
+    let t1 = Tank {
+        id :1,
+        name : Some (String::from("tank")),
+        elevation : 20.0,
+        head : 20.0,
+        pressure : None,
+    };
+
+    let j2 = Junction {
+        id : 2,
+        name : Some(String::from("J2")),
+        elevation : 0.0,
+        demand : 0.25,
+        head : None,
+        pressure : None,
+    };
+
+    let j3 = Junction {
+        id : 3,
+        name : Some(String::from("J3")),
+        elevation : 0.0,
+        demand : 0.25,
+        head : None,
+        pressure : None,
+    };
+
+    let j4 = Junction {
+        id : 4,
+        name : Some(String::from("J4")),
+        elevation : 0.0,
+        demand : 0.375,
+        head : None,
+        pressure : None,
+    };
+
+    let j5 = Junction {
+        id : 5,
+        name : Some(String::from("J5")),
+        elevation : 0.0,
+        demand : 0.25,
+        head : None,
+        pressure : None,
+    };
+
+    let p1 = Pipe {
+        id : 1,
+        name :  Some(String::from("P1")),
+        start : 1,
+        end : 2,
+        length : 500.0,
+        diameter : 0.300,
+        c_hw : 145.0,
+        flow : None,
+        state : LinkStatus::Open,
+        check_valve : false,
+        //velocity : None,
+    };
+
+    let mut p2 = p1.clone();
+    p2.start =2;
+    p2.end = 3;
+
+    let mut p3 = p1.clone();
+    p3.start = 2;
+    p3.end = 4;
+
+    let mut p4 = p1.clone();
+    p4.start = 2;
+    p4.end = 5;
+    
+    let mut p5 = p1.clone();
+    p5.start = 3;
+    p5.end = 5;
+
+    let mut p6 = p1.clone();
+    p6.start = 4;
+    p6.end = 5;
+
+    let ts = vec![t1];
+    let js = vec![j2,j3, j4, j5];
+    let ps = vec![p1,p2,p3, p4, p5, p6];
+    let pms = vec![];
+    let rs = vec![];
+    let vlvs = vec![];
+
+
+    let net2 = Network {
+        junctions :js,
+        pipes : ps,
+        tanks : ts,
+        reservoirs : rs,
+        pumps : pms,
+        valves : vlvs,
+    };
+
+    net2
+
+}
 
