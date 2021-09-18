@@ -532,46 +532,46 @@ fn network6()-> Network {
 // Network 2 (Todini et al., 2021) Pressure Flow-Based Algo for PD analysis of WDN (J. Water Resour.Plann.Manage.)
 
 fn network2_todini()-> Network {
-    let t1 = Tank {
+    let n1 = Tank {
         id :1,
-        name : Some (String::from("tank")),
+        name : Some (String::from("n1-tank")),
         elevation : 20.0,
         head : 20.0,
         pressure : None,
     };
 
-    let j2 = Junction {
+    let n2 = Junction {
         id : 2,
-        name : Some(String::from("J2")),
+        name : Some(String::from("n2")),
         elevation : 0.0,
-        demand : 0.25,
+        demand : 300.74/3600.0, //0.25,
         head : None,
         pressure : None,
     };
 
-    let j3 = Junction {
+    let n3 = Junction {
         id : 3,
-        name : Some(String::from("J3")),
+        name : Some(String::from("n3")),
         elevation : 0.0,
-        demand : 0.25,
+        demand : 207.58/3600.0, //0.25,
         head : None,
         pressure : None,
     };
 
-    let j4 = Junction {
+    let n4 = Junction {
         id : 4,
-        name : Some(String::from("J4")),
+        name : Some(String::from("n4")),
         elevation : 0.0,
-        demand : 0.375,
+        demand : 296.86/3600.0, //0.375,
         head : None,
         pressure : None,
     };
 
-    let j5 = Junction {
+    let n5 = Junction {
         id : 5,
-        name : Some(String::from("J5")),
+        name : Some(String::from("n5")),
         elevation : 0.0,
-        demand : 0.25,
+        demand : 205.74/3600.0, //0.25,
         head : None,
         pressure : None,
     };
@@ -610,8 +610,8 @@ fn network2_todini()-> Network {
     p6.start = 4;
     p6.end = 5;
 
-    let ts = vec![t1];
-    let js = vec![j2,j3, j4, j5];
+    let ts = vec![n1];
+    let js = vec![n2,n3, n4, n5];
     let ps = vec![p1,p2,p3, p4, p5, p6];
     let pms = vec![];
     let rs = vec![];
