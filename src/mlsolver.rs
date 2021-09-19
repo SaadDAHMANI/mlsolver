@@ -325,14 +325,12 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     
           //Updating A (eq13):
          _intpart =(f64::powf(_coef_b, n)- f64::powf(_coef_a, n))/(_coef_b - _coef_a);
-         a[i+npip+npmp][i+npip+npmp]=f64::signum(flowsq[i+npip+npmp])*_intpart* network.valves[i].get_rq(flowsq[i+npip+npmp]);
+         a[i+_k][i+_k]=f64::signum(flowsq[i+_k])*_intpart* network.valves[i].get_rq(flowsq[i+_k]);
         
          //Updating B (eq14):
-         b[i+npip+npmp]=-1.0*f64::signum(flowsq[i+npip+npmp])*network.valves[i].get_rq(flowsq[i+npip+npmp])*((_intpart*_coef_a) - f64::powf(_coef_a,n));          
+         b[i+_k]=-1.0*f64::signum(flowsq[i+_k])*network.valves[i].get_rq(flowsq[i+_k])*((_intpart*_coef_a) - f64::powf(_coef_a,n));          
 
     }   
-
-
 }
 
 
