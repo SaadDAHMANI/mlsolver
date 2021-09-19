@@ -55,7 +55,7 @@ fn network1()-> (Vec<Vec<f64>>, Vec<Vec<f64>>, Vec<f64>, Vec<f64>, Vec<f64>) {
     (a21, a10, h0, q, r) 
  
 }
-
+//Network 1 (example) in Moosavian, 2017 - Multilinear Method for Hydraulic Analysis of Pipe networks
 fn network7()->Network {
     let t1 = Tank {
         id :0,
@@ -633,6 +633,93 @@ fn network6()-> Network {
 
      net6
 } 
+
+
+// Network  (Todini et al., 2021) Pressure Flow-Based Algo for PD analysis of WDN (J. Water Resour.Plann.Manage.)
+
+fn network1_todini()-> Network {
+    let n1 = Tank {
+        id :1,
+        name : Some (String::from("n1-tank")),
+        elevation : 100.0,
+        head : 100.0,
+        pressure : None,
+    };
+
+    let n2 = Junction {
+        id : 2,
+        name : Some(String::from("n2")),
+        elevation : 90.0,
+        demand : 77.26/3600.0,
+        head : None,
+        pressure : None,
+    };
+    
+    let mut n3 = n2.clone();
+    n3.id = 3;
+    n3.elevation =88.0;
+    n3.demand =76.63/3600.0;
+
+    let mut n4 = n2.clone();
+    n4.id = 4;
+    n4.elevation =90.0;
+    n4.demand =75.80/3600.0;
+
+    let mut n5 = n2.clone();
+    n5.id = 5;
+    n5.elevation =88.0;
+    n5.demand = 145.46/3600.0;
+
+    let p1 = Pipe {
+        id : 1,
+        name :  Some(String::from("P1")),
+        start : 1,
+        end : 2,
+        length : 1000.0,
+        diameter : 0.400,
+        c_hw : 130.0,
+        flow : None,
+        state : LinkStatus::Open,
+        check_valve : false,
+        //velocity : None,
+    };
+
+    let mut p2 = p1.clone();
+    p2.start = 2;
+    p2.end = 3;
+    p2.diameter = 0.350;
+
+    let mut p3 = p1.clone();
+    p3.start = 3;
+    p3.end = 4;
+    p3.diameter = 0.300;
+
+    let mut p4 = p3.clone();
+    p4.start = 4;
+    p4.end = 5;
+
+    let ts = vec![n1];
+    let js = vec![n2,n3, n4, n5];
+    let ps = vec![p1,p2,p3, p4];
+    let pms = vec![];
+    let rs = vec![];
+    let vlvs = vec![];
+
+
+    let net = Network {
+        junctions :js,
+        pipes : ps,
+        tanks : ts,
+        reservoirs : rs,
+        pumps : pms,
+        valves : vlvs,
+    };
+
+    net    
+}
+
+
+
 
 // Network 2 (Todini et al., 2021) Pressure Flow-Based Algo for PD analysis of WDN (J. Water Resour.Plann.Manage.)
 

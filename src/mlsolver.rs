@@ -29,7 +29,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     
     let mut iter : usize =0;
     let itermax : usize = 40; 
-    let objective_err : f64 =0.000001;
+    let objective_err : f64 =0.0001;
     
      let mut _a = vec![vec![0.0f64; np]; np]; //A
      let mut _b =vec![0.0f64; np]; // B
@@ -70,11 +70,12 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
          // 1.1- initilize A matrix :
          //initilize_a(&mut _a, & r, qmax);
          initilize_a_matrix(&mut _a, &network);
-         //print(&_a,&"[A]");
+         
+         print(&_a,&"[A]0");
         
          // 1.2- initiliza B matrix :
             
-         //print_vector(&_b, &"[B]");      
+         print_vector(&_b, &"[B]0");      
          }
     
         else {
@@ -82,7 +83,13 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
              //Updating A (eq13) & B (eq14):
     
              //update_a_b(&mut _a, &mut _b, &_flowsq, &r, deltaq, n);
-              update_matrices_a_b(&mut _a, &mut _b, &network, &_flowsq, deltaq, n)
+
+              update_matrices_a_b(&mut _a, &mut _b, &network, &_flowsq, deltaq, n);
+
+              print(&_a, &String::from("[A]"));
+
+              print_vector(&_b, &"[B]");     
+
              //let mut _intpart : f64 =0.0;
             
             //for i in 0..np {
@@ -188,7 +195,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
               _flowsq[i]=tmpql[i]-tmpqr[i];
           }
     
-          //print_vector(&_flowsq, "[Q]");
+          print_vector(&_flowsq, "[Q]");
 
 
           //print(&tmpqm, &String::from("At-1 x A12"));
@@ -215,7 +222,12 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
 
          Some((_flowsq, _headsh, iter+1))
     }
-    
+  
+//fn compute_heads(h : &mut Vec<f64>, q : &mut Vec<f64>, netw : &Network) {
+//    let (a21, a10, h0, q, r,) = netw.get_network();
+//   let a12 = transpose(&a21);
+//   let tmpc = product2(&a10, &h0);
+//}    
 
  
 fn initilize_a_matrix(result_a : &mut Vec<Vec<f64>>, network : &Network) {
@@ -259,6 +271,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     let npip = network.pipes.len();
     let npmp = network.pumps.len();
     let nvlv = network.valves.len();
+   
     //let ml =1.0; //minor loss coefficient
                      
     //update A & B matrices for pipes :
@@ -269,7 +282,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
          _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i]))*deltaq;
     
           //Updating A (eq13):
-         _intpart =(f64::powf(_coef_b, n)- f64::powf(_coef_a, n))/(_coef_b - _coef_a);
+         _intpart =(f64::powf(_coef_b, n) - f64::powf(_coef_a, n))/(_coef_b - _coef_a);
          // a[i][i]=f64::signum(flowsq[i])*_r[i]*_intpart;
          a[i][i]=f64::signum(flowsq[i])* network.pipes[i].get_r_of_q(flowsq[i])*_intpart;
 
@@ -278,7 +291,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
         
          //Updating B (eq14):
          // b[i]=-1.0*f64::signum(flowsq[i])*_r[i]*(_intpart*_coef_a - f64::powf(_coef_a,n)); 
-         b[i]=-1.0*f64::signum(flowsq[i])*network.pipes[i].get_r_of_q(flowsq[i])*(_intpart*_coef_a - f64::powf(_coef_a,n));  
+         b[i]=-1.0*f64::signum(flowsq[i])*network.pipes[i].get_r_of_q(flowsq[i])*((_intpart*_coef_a) - f64::powf(_coef_a,n));  
        } 
 
      //update A & B matrices for pumps :
@@ -287,7 +300,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
 
     for i in 0..npmp {
 
-        _intpart=flowsq[i]/deltaq;   
+        _intpart=flowsq[i+npip]/deltaq;   
          _coef_a = f64::trunc(_intpart)*deltaq;
          _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i+npip]))*deltaq;
     
@@ -296,11 +309,12 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
          a[i+npip][i+npip]=f64::signum(flowsq[i+npip])*_intpart* network.pumps[i].get_rq(flowsq[i+npip]);
         
          //Updating B (eq14):
-         b[i+npip]=-1.0*f64::signum(flowsq[i+npip])*network.pumps[i].get_rq(flowsq[i+npip])*(_intpart*_coef_a - f64::powf(_coef_a,n));          
+         b[i+npip]=-1.0*f64::signum(flowsq[i+npip])*network.pumps[i].get_rq(flowsq[i+npip])*((_intpart*_coef_a) - f64::powf(_coef_a,n));          
 
     }   
 
       //update A & B matrices for valves :
+      //let mut _k : usize =npip+npmp;
 
       for i in 0..nvlv {
 
@@ -313,7 +327,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
          a[i+npip+npmp][i+npip+npmp]=f64::signum(flowsq[i+npip+npmp])*_intpart* network.valves[i].get_rq(flowsq[i+npip+npmp]);
         
          //Updating B (eq14):
-         b[i+npip+npmp]=-1.0*f64::signum(flowsq[i+npip+npmp])*network.valves[i].get_rq(flowsq[i+npip+npmp])*(_intpart*_coef_a - f64::powf(_coef_a,n));          
+         b[i+npip+npmp]=-1.0*f64::signum(flowsq[i+npip+npmp])*network.valves[i].get_rq(flowsq[i+npip+npmp])*((_intpart*_coef_a) - f64::powf(_coef_a,n));          
 
     }   
 
