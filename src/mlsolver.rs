@@ -314,11 +314,12 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     }   
 
       //update A & B matrices for valves :
-      //let mut _k : usize =npip+npmp;
+
+      let _k : usize =npip+npmp;
 
       for i in 0..nvlv {
 
-        _intpart=flowsq[i]/deltaq;   
+        _intpart=flowsq[i+_k]/deltaq;   
          _coef_a = f64::trunc(_intpart)*deltaq;
          _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i+npip]))*deltaq;
     
