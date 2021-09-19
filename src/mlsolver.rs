@@ -217,9 +217,9 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
           if iter >= itermax {stoploop=true;}
 
           print_vector(&_headsh, "[Hs]");
-
+        
          }
-
+        
          Some((_flowsq, _headsh, iter+1))
     }
   
@@ -256,7 +256,6 @@ fn initilize_a_matrix(result_a : &mut Vec<Vec<f64>>, network : &Network) {
     }
 
 } 
-
 
 fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Network, flowsq : &Vec<f64>, deltaq : f64, n : f64) {
 
@@ -330,9 +329,8 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
          //Updating B (eq14):
          b[i+_k]=-1.0*f64::signum(flowsq[i+_k])*network.valves[i].get_rq(flowsq[i+_k])*((_intpart*_coef_a) - f64::powf(_coef_a,n));          
 
-    }   
-}
-
+    }
+}   
 
 fn check_convergence(actual : &Vec<f64>, previous : &Vec<f64>, objective : f64)->bool {
   

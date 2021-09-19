@@ -685,6 +685,7 @@ fn network1_todini()-> Network {
     };
 
     let mut p2 = p1.clone();
+    p2.id =2;
     p2.start = 2;
     p2.end = 3;
     p2.diameter = 0.350;
@@ -783,22 +784,27 @@ fn network2_todini()-> Network {
     };
 
     let mut p2 = p1.clone();
+    p2.id =2;
     p2.start =2;
     p2.end = 3;
 
     let mut p3 = p1.clone();
+    p3.id = 3;
     p3.start = 2;
     p3.end = 4;
 
     let mut p4 = p1.clone();
+    p4.id =4;
     p4.start = 2;
     p4.end = 5;
     
     let mut p5 = p1.clone();
+    p5.id =5;
     p5.start = 3;
     p5.end = 5;
 
     let mut p6 = p1.clone();
+    p6.id =6;
     p6.start = 4;
     p6.end = 5;
 

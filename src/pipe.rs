@@ -19,7 +19,7 @@ impl Pipe {
     fn headloss(&self)-> Option<f64> {
 
         let hl = match self.flow {
-            Some(q) => Some(self.resistance()*q.powf(1.852)), 
+            Some(q) => Some(self.resistance()*q.abs().powf(1.852)), 
             None => None,
         };
         hl

@@ -22,7 +22,7 @@ include!("benchmark.rs");
 fn main() {
     println!("Hello, mlsolver ()!");
 
-    let mut network = network1_todini();
+    let mut network = network2_todini();
     
     let chronos = Instant::now();
     
@@ -33,17 +33,20 @@ fn main() {
         match q_h {
         Some(results)=> { 
             
-            print_vector(&results.0, "[Qi]:"); 
+             print_vector(&results.0, "[Qi]:"); 
              print_vector(&results.1, "[Hi]:"); 
              println!("Iter = {}", results.2);
 
              let mut i : usize =0;
+             let  qs =  results.0;
 
              for p in network.pipes.iter_mut() {
-                p.flow = Some(results.0[i]);
+               // println! ("qs[i] {:?}", qs[i]);
+
+                 p.flow = Some(qs[i]);
                  i+=1; 
             
-             println!("hp = {:?}",  p.headloss());    
+                 println!("hp = {:?}",  p.headloss());    
                 }
 
 
