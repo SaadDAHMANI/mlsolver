@@ -321,7 +321,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
 
         _intpart=flowsq[i+_k]/deltaq;   
          _coef_a = f64::trunc(_intpart)*deltaq;
-         _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i+npip]))*deltaq;
+         _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i+_k]))*deltaq;
     
           //Updating A (eq13):
          _intpart =(f64::powf(_coef_b, n)- f64::powf(_coef_a, n))/(_coef_b - _coef_a);
