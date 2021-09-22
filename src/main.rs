@@ -22,7 +22,7 @@ include!("benchmark.rs");
 fn main() {
     println!("Hello, mlsolver ()!");
 
-    let mut network = network2_todini();
+    let mut network = network7();
     
     let chronos = Instant::now();
     

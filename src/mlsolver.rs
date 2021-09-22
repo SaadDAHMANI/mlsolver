@@ -43,9 +43,9 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
      let mut _coef_b = vec![0.0f64; np]; //bi
     
      let m : f64 = 10.0;
-     let n : f64 =2.0;
+     let n : f64 = 1.852;
     
-     let _a12 =transpose(&a21);
+     let _a12 = transpose(&a21);
     
      print(& a21, &"A21");
      //print(&_a12, &"A12");
@@ -202,7 +202,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     
           //Check convergence :
           
-          stoploop = check_convergence(&_flowsq, &_previous_q, objective_err) & check_convergence(&_headsh, &_previous_h, objective_err); 
+          stoploop = check_convergence(&_headsh, &_previous_h, objective_err); //+  check_convergence(&_flowsq, &_previous_q, objective_err); 
     
          //Copy data 
          for i in 0..np {
@@ -335,13 +335,14 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
 fn check_convergence(actual : &Vec<f64>, previous : &Vec<f64>, objective : f64)->bool {
   
     let mut _num :f64 =0.0;
-    let mut _den :f64 =0.0;
+    let mut _den :f64 =1.0;
 
     for i in 0..actual.len(){
         _num +=f64::abs(actual[i])-f64::abs(previous[i]);
-        _den += f64::abs(actual[i]); 
+        //_den = f64::abs(actual[i]); 
     }
-
+    let cerr = _num/_den;
+    println!("Convergence err  = {}",cerr);
     if (_num/_den)<=objective {
         true
     } 
