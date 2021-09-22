@@ -349,7 +349,6 @@ fn check_convergence(actual : &Vec<f64>, previous : &Vec<f64>, objective : f64)-
     else {false}    
 }
 
-
 fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
  
     let nr = matrix.len();
@@ -364,7 +363,6 @@ fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
 
     transposed
 }
-
 
  fn product(left : &Vec<Vec<f64>>, right : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
     
@@ -400,7 +398,6 @@ fn transpose(matrix: &Vec<Vec<f64>>)-> Vec<Vec<f64>> {
     
 }
 
-
 fn product2(left : &Vec<Vec<f64>>, right : &Vec<f64>)-> Result<Vec<f64>, String> {
     
     let m =  left.len();
@@ -430,7 +427,6 @@ fn product2(left : &Vec<Vec<f64>>, right : &Vec<f64>)-> Result<Vec<f64>, String>
     
 }
 
-
 fn invers(matrix : &Vec<Vec<f64>>)->Result<Vec<Vec<f64>>, String> {
     if matrix.len() != matrix[0].len() {
         Err(String::from("Matrix is not square!"))
@@ -451,7 +447,6 @@ fn invers(matrix : &Vec<Vec<f64>>)->Result<Vec<Vec<f64>>, String> {
         Ok(inversed)
     }
 }
-
  
 fn invers_diagonal(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
     
