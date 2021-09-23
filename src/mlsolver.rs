@@ -454,20 +454,21 @@ fn invers_diagonal(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
         Err(String::from("The matrix size must be >0!"))
      }
      else {
-    
-         if matrix.len()== matrix[0].len() {
-             let mut invers = vec![vec![0.0f64; matrix.len()]; matrix.len()];
+      
+        if matrix.len()== matrix[0].len() {
+
+            let mut invers = vec![vec![0.0f64; matrix.len()]; matrix.len()];
 
              for i in 0.. matrix.len(){
-                 invers[i][i]=1.0/matrix[i][i];
+                invers[i][i]=1.0/matrix[i][i];
              }
 
-      Ok(invers)
+            Ok(invers)
 
-    }
-    else {
-         Err(String::from("The matrix is not square!"))
-    }
+          }
+           else {
+                Err(String::from("The matrix is not square!"))
+         }
   }   
 }
 
