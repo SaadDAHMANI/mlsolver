@@ -202,7 +202,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     
           //Check convergence :
           
-          stoploop = check_convergence(&_headsh, &_previous_h, objective_err); //+  check_convergence(&_flowsq, &_previous_q, objective_err); 
+          stoploop = check_convergence(&_flowsq, &_previous_q, objective_err) & check_convergence(&_headsh, &_previous_h, objective_err); 
     
          //Copy data 
          for i in 0..np {
@@ -428,24 +428,26 @@ fn product2(left : &Vec<Vec<f64>>, right : &Vec<f64>)-> Result<Vec<f64>, String>
 }
 
 fn invers(matrix : &Vec<Vec<f64>>)->Result<Vec<Vec<f64>>, String> {
-    if matrix.len() != matrix[0].len() {
-        Err(String::from("Matrix is not square!"))
-    }
-    else {
-        let n = matrix.len();
-        //let mut inv = vec![vec![0.0f64; n]; n];
-        //Using peroxide crate :
+   // if matrix.len() != matrix[0].len() {
+   //     Err(String::from("Matrix is not square!"))
+   // }
+   // else {
+   //    let n = matrix.len();
+   //     ////let mut inv = vec![vec![0.0f64; n]; n];
+    //    ////Using peroxide crate :
 
-        let mut pmatrix = zeros(n,n);
-        //copy matrix 
-        for i in 0..n {
-            for j in 0..n {
-                pmatrix[(i,j)]=matrix[i][j];
-            }
-        }
-        let inversed =pmatrix.inv().to_vec(); 
-        Ok(inversed)
-    }
+   //     let mut pmatrix = zeros(n,n);
+    //    //copy matrix 
+    //    for i in 0..n {
+    //        for j in 0..n {
+    //            pmatrix[(i,j)]=matrix[i][j];
+    //        }
+    //    }
+    //    let inversed =pmatrix.inv().to_vec(); 
+    //    Ok(inversed)
+    // }
+
+    inverse_matrix_jordan(&matrix)
 }
  
 fn invers_diagonal(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
@@ -471,6 +473,73 @@ fn invers_diagonal(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
          }
   }   
 }
+
+
+fn inverse_matrix_jordan(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
+    let n = matrix.len();
+    
+    if matrix.len() != matrix[0].len() {
+        Err(String::from("Matrix is not square!"))
+    }
+    else {
+            
+     let mut a = vec![vec![0.0f64; 2*n]; n];
+
+    //copy th matrix 
+    for i in 0..n {
+        for j in 0..n {
+            a[i][j]=matrix[i][j];
+        }
+    }
+
+    for i in 0..n {
+        for j in 0..n {
+            if i==j {
+                a[i][j+n]=1.0;
+            }
+        }
+    }
+
+    //Apply Gauss Jordan Elimination on Augmented Matrix (A):
+
+    for i in 0..n {
+        if a[i][i] == 0.0 {
+            panic!("diagonal is nul")
+            //Err(String::from("Diagonal is null !"))     
+        }
+        else {  
+
+        for j in 0..n {
+            if i != j {
+                let ratio = a[j][i]/a[i][i];
+
+                for k in 0..2*n {
+                     a[j][k] = a[j][k] - ratio *a[i][k]   
+                }
+            }
+        }
+    }
+}
+    // Row Operation to Convert Principal Diagonal to 1.
+    for i in 0..n {
+        for j in n..2*n {
+            a[i][j] = a[i][j]/a[i][i];
+         }
+    }   
+
+    //copy result to b :
+    let mut b = vec![vec![0.0f64; n]; n];    
+    for i in 0..n {
+        for j in 0..n {
+            b[i][j]= a[i][j+n];
+        }
+    }
+    return Ok(b);
+}
+} 
+
+
+
 
 
 
