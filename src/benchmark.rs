@@ -726,7 +726,7 @@ fn network1_todini()-> Network {
 
 fn network2_todini()-> Network {
     let n1 = Tank {
-        id :1,
+        id :0,
         name : Some (String::from("n1-tank")),
         elevation : 20.0,
         head : 20.0,
@@ -734,7 +734,7 @@ fn network2_todini()-> Network {
     };
 
     let n2 = Junction {
-        id : 2,
+        id : 1,
         name : Some(String::from("n2")),
         elevation : 0.0,
         demand : 300.74/3600.0, //0.25,
@@ -743,7 +743,7 @@ fn network2_todini()-> Network {
     };
 
     let n3 = Junction {
-        id : 3,
+        id : 2,
         name : Some(String::from("n3")),
         elevation : 0.0,
         demand : 207.58/3600.0, //0.25,
@@ -752,7 +752,7 @@ fn network2_todini()-> Network {
     };
 
     let n4 = Junction {
-        id : 4,
+        id : 3,
         name : Some(String::from("n4")),
         elevation : 0.0,
         demand : 296.86/3600.0, //0.375,
@@ -761,7 +761,7 @@ fn network2_todini()-> Network {
     };
 
     let n5 = Junction {
-        id : 5,
+        id : 4,
         name : Some(String::from("n5")),
         elevation : 0.0,
         demand : 205.74/3600.0, //0.25,
@@ -770,10 +770,10 @@ fn network2_todini()-> Network {
     };
 
     let p1 = Pipe {
-        id : 1,
+        id : 0,
         name :  Some(String::from("P1")),
-        start : 1,
-        end : 2,
+        start : 0,
+        end : 1,
         length : 500.0,
         diameter : 0.300,
         c_hw : 145.0,
@@ -784,29 +784,29 @@ fn network2_todini()-> Network {
     };
 
     let mut p2 = p1.clone();
-    p2.id =2;
-    p2.start =2;
-    p2.end = 3;
+    p2.id =1;
+    p2.start =1;
+    p2.end = 2;
 
     let mut p3 = p1.clone();
-    p3.id = 3;
-    p3.start = 2;
-    p3.end = 4;
+    p3.id = 2;
+    p3.start = 1;
+    p3.end = 3;
 
     let mut p4 = p1.clone();
-    p4.id =4;
-    p4.start = 2;
-    p4.end = 5;
+    p4.id =3;
+    p4.start = 1;
+    p4.end = 4;
     
     let mut p5 = p1.clone();
-    p5.id =5;
-    p5.start = 3;
-    p5.end = 5;
+    p5.id =4;
+    p5.start = 2;
+    p5.end = 4;
 
     let mut p6 = p1.clone();
-    p6.id =6;
+    p6.id =5;
     p6.start = 4;
-    p6.end = 5;
+    p6.end = 3;
 
     let ts = vec![n1];
     let js = vec![n2,n3, n4, n5];

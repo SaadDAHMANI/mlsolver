@@ -28,7 +28,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     if np<1 {return Option::None;}
     
     let mut iter : usize =0;
-    let itermax : usize = 40; 
+    let itermax : usize = 5; 
     let objective_err : f64 =0.0001;
     
      let mut _a = vec![vec![0.0f64; np]; np]; //A
@@ -43,7 +43,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
      let mut _coef_b = vec![0.0f64; np]; //bi
     
      let m : f64 = 10.0;
-     let n : f64 = 1.852;
+     let n : f64 = 1.852; //2.0;
     
      let _a12 = transpose(&a21);
     
@@ -63,6 +63,8 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     
     while stoploop == false {
       // step 1- Update A & B 
+
+      println!("-----------------------------> iter : {}", iter);
     
       // initilize A & B if the first iteration
       if iter==0 {
@@ -202,7 +204,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     
           //Check convergence :
           
-          stoploop = check_convergence(&_flowsq, &_previous_q, objective_err) & check_convergence(&_headsh, &_previous_h, objective_err); 
+          stoploop = check_convergence(&_flowsq, &_previous_q, objective_err); //& check_convergence(&_headsh, &_previous_h, objective_err); 
     
          //Copy data 
          for i in 0..np {
@@ -276,22 +278,30 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     //update A & B matrices for pipes :
 
     for i in 0..npip {
-         _intpart=flowsq[i]/deltaq;   
+         _intpart=flowsq[i]/deltaq;           
+
          _coef_a = f64::trunc(_intpart)*deltaq;
          _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i]))*deltaq;
-    
-          //Updating A (eq13):
+
+
+         //Updating A (eq13):
+           
          _intpart =(f64::powf(_coef_b, n) - f64::powf(_coef_a, n))/(_coef_b - _coef_a);
+        
+
          // a[i][i]=f64::signum(flowsq[i])*_r[i]*_intpart;
-         a[i][i]=f64::signum(flowsq[i])* network.pipes[i].get_r_of_q(flowsq[i])*_intpart;
+         a[i][i]=f64::signum(flowsq[i])* network.pipes[i].get_r_of_q(flowsq[i].abs())*_intpart;
 
          //a[i][i]=f64::signum(flowsq[i])* (network.pipes[i].get_r_of_q(flowsq[i])*_intpart + ml*flowsq[i]);
 
         
          //Updating B (eq14):
          // b[i]=-1.0*f64::signum(flowsq[i])*_r[i]*(_intpart*_coef_a - f64::powf(_coef_a,n)); 
-         b[i]=-1.0*f64::signum(flowsq[i])*network.pipes[i].get_r_of_q(flowsq[i])*((_intpart*_coef_a) - f64::powf(_coef_a,n));  
-       } 
+         b[i]=-1.0*f64::signum(flowsq[i])*network.pipes[i].get_r_of_q(flowsq[i].abs())*((_intpart*_coef_a) - f64::powf(_coef_a,n));  
+       
+         println!("P: {}, _intpart = {}, a = {}, b = {}, A = {}, B = {} ", i, _intpart, _coef_a, _coef_b, a[i][i], b[i]);
+
+        } 
 
      //update A & B matrices for pumps :
 
