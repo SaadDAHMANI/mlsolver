@@ -13,7 +13,7 @@
 
 //#[macro_use]
 extern crate peroxide;
-use peroxide::prelude::*;
+//use peroxide::prelude::*;
 //use peroxide::fuga::*;
 
 
@@ -28,7 +28,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     if np<1 {return Option::None;}
     
     let mut iter : usize =0;
-    let itermax : usize = 5; 
+    let itermax : usize = 2; 
     let objective_err : f64 =0.0001;
     
      let mut _a = vec![vec![0.0f64; np]; np]; //A
@@ -204,7 +204,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     
           //Check convergence :
           
-          stoploop = check_convergence(&_flowsq, &_previous_q, objective_err); //& check_convergence(&_headsh, &_previous_h, objective_err); 
+          stoploop = check_convergence(&_flowsq, &_previous_q, objective_err) & check_convergence(&_headsh, &_previous_h, objective_err); 
     
          //Copy data 
          for i in 0..np {
@@ -280,6 +280,8 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     for i in 0..npip {
          _intpart=flowsq[i]/deltaq;           
 
+         println!("_intpart = {}", _intpart);
+
          _coef_a = f64::trunc(_intpart)*deltaq;
          _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i]))*deltaq;
 
@@ -299,7 +301,7 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
          // b[i]=-1.0*f64::signum(flowsq[i])*_r[i]*(_intpart*_coef_a - f64::powf(_coef_a,n)); 
          b[i]=-1.0*f64::signum(flowsq[i])*network.pipes[i].get_r_of_q(flowsq[i].abs())*((_intpart*_coef_a) - f64::powf(_coef_a,n));  
        
-         println!("P: {}, _intpart = {}, a = {}, b = {}, A = {}, B = {} ", i, _intpart, _coef_a, _coef_b, a[i][i], b[i]);
+        // println!("P: {}, _intpart = {}, a = {}, b = {}, A = {}, B = {} ", i, _intpart, _coef_a, _coef_b, a[i][i], b[i]);
 
         } 
 
