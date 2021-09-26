@@ -30,7 +30,7 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     if np<1 {return Option::None;}
     
     let mut iter : usize =0;
-    let itermax : usize = 5; 
+    let itermax : usize = 40; 
     let objective_err : f64 =0.0001;
     
      let mut _a = vec![vec![0.0f64; np]; np]; //A
