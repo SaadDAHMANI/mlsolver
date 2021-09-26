@@ -58,6 +58,11 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
     for i in 0..q.len() {
        qmax+=q[i];
     }
+
+    for i in 0..nn {
+        _headsh[i]=h0[0];
+    }    
+    
     // compute delta Q
     let deltaq = qmax/m;
     
