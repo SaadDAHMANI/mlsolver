@@ -19,7 +19,9 @@ use peroxide::prelude::*;
 
 pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
 
-    let (a21, a10, h0, q, r) = network.get_network();
+    let (a21, a10, h0, q0, r) = network.get_network();
+    
+    let mut q = q0;
 
     let nn = a21.len();
     let np = a21[0].len();
@@ -162,6 +164,11 @@ pub fn ml_solver(network : &Network)->Option<(Vec<f64>, Vec<f64>, usize)> {
              Err(error) => panic!("Problem with product matrix by vector : {:?}", error),
          };
     
+         // UPDATE q FOR PDA Analysis
+
+         q =update_q_pda(&q, &_headsh);
+         //
+
          for i in 0..nn {
              tmp[i] -= q[i];   
          }
@@ -484,7 +491,6 @@ fn invers_diagonal(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
   }   
 }
 
-
 fn inverse_matrix_jordan(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String> {
     let n = matrix.len();
     
@@ -549,8 +555,36 @@ fn inverse_matrix_jordan(matrix : &Vec<Vec<f64>>)-> Result<Vec<Vec<f64>>, String
 } 
 
 
+fn update_q_pda(q_required : &Vec<f64>, h_availabale : &Vec<f64>)-> Vec<f64> {
+    let nn = q_required.len();
+    let mut q_available = vec![0.0f64; nn];
+    let mut h_desired = vec![0.0f64; nn];
 
+    let n : f64 =2.0;
+    let r : f64 = 0.1;
+    let m : f64 = 2.0;
+    let hmin : f64 = 0.0;
 
+    for i in 0..nn {
+        h_desired[i] = hmin + r*q_required[i].powf(m);
+    }
+
+    for i in 0..nn {
+
+        if h_availabale[i] > h_desired[i] {
+            q_available[i] = q_required[i];
+        }
+        else if  h_availabale[i]>hmin && h_availabale[i] < h_desired[i]{
+            q_available[i] = q_required[i] * f64::powf((h_availabale[i]-hmin)/(h_desired[i]-hmin), n); 
+        }
+        else {
+            q_available[i]=0.0;
+        }
+
+    }
+
+    q_available
+}
 
 
 
