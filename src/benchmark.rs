@@ -805,8 +805,8 @@ fn network2_todini()-> Network {
 
     let mut p6 = p1.clone();
     p6.id =5;
-    p6.start = 4;
-    p6.end = 3;
+    p6.start = 3;
+    p6.end = 4;
 
     let ts = vec![n1];
     let js = vec![n2,n3, n4, n5];

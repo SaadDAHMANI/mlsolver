@@ -278,28 +278,24 @@ fn update_matrices_a_b(a : &mut Vec<Vec<f64>>, b : &mut Vec<f64>, network : &Net
     //update A & B matrices for pipes :
 
     for i in 0..npip {
-         _intpart=flowsq[i]/deltaq;           
+         _intpart=flowsq[i].abs()/deltaq;           
 
          println!("_intpart = {}", _intpart);
 
          _coef_a = f64::trunc(_intpart)*deltaq;
-         _coef_b = f64::trunc(_intpart + f64::signum(flowsq[i]))*deltaq;
+         _coef_b = _coef_a + deltaq;
 
 
          //Updating A (eq13):
+         // A(i,i) = R(i)*(b(i)^n-a(i)^n)/(b(i)-a(i));
            
          _intpart =(f64::powf(_coef_b, n) - f64::powf(_coef_a, n))/(_coef_b - _coef_a);
-        
+         a[i][i]= network.pipes[i].get_r_of_q(flowsq[i])*_intpart;
 
-         // a[i][i]=f64::signum(flowsq[i])*_r[i]*_intpart;
-         a[i][i]=f64::signum(flowsq[i])* network.pipes[i].get_r_of_q(flowsq[i].abs())*_intpart;
-
-         //a[i][i]=f64::signum(flowsq[i])* (network.pipes[i].get_r_of_q(flowsq[i])*_intpart + ml*flowsq[i]);
-
-        
          //Updating B (eq14):
-         // b[i]=-1.0*f64::signum(flowsq[i])*_r[i]*(_intpart*_coef_a - f64::powf(_coef_a,n)); 
-         b[i]=-1.0*f64::signum(flowsq[i])*network.pipes[i].get_r_of_q(flowsq[i].abs())*((_intpart*_coef_a) - f64::powf(_coef_a,n));  
+         
+         //B(i) = sign(Q(i))*R(i)*((b(i)^n-a(i)^n)/(b(i)-a(i))*a(i)-a(i)^n);
+         b[i]= -1.0* f64::signum(flowsq[i])*network.pipes[i].get_r_of_q(flowsq[i])*((_intpart*_coef_a) - f64::powf(_coef_a,n));  
        
         // println!("P: {}, _intpart = {}, a = {}, b = {}, A = {}, B = {} ", i, _intpart, _coef_a, _coef_b, a[i][i], b[i]);
 
